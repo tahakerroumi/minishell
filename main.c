@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 08:49:08 by ta7ino            #+#    #+#             */
-/*   Updated: 2024/08/10 16:58:13 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/08/11 13:02:13 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,11 +198,34 @@ char **split_path(char *old_path)
     return (new_path);
 }
 
+char	*check_exec(char **path,char *command)
+{
+	int i = 0;
+	while (path[i])
+	{
+		char *str = ft_strjoin(path[i], command);
+		if (!access(str,F_OK))
+			return (str);
+		i++;
+	}
+	return (NULL);
+}
+
 int main(int ac, char **av, char **env)
 {
     (void)ac;
     (void)av;
-    int i = -1;
+	char *idk;
     char *envpath = get_path(env);
     char **path = split_path(envpath);
+	char *prompt = readline("taha's shell:~ ");
+	char **command = ft_split(prompt,' ');
+	idk = ft_strjoin("/",command[0]);
+	char *exec = check_exec(path, idk); // exec first arg;
+	if (!exec)
+		return(printf("command not found"));
+	printf("\n\n%s\n\n", exec);
+	int one = execve(exec,command,env);
+	if (one == -1)
+		printf("command not found");
 }

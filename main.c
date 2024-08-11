@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ta7ino <ta7ino@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 08:49:08 by ta7ino            #+#    #+#             */
-/*   Updated: 2024/08/09 11:15:32 by ta7ino           ###   ########.fr       */
+/*   Updated: 2024/08/10 16:58:13 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,26 @@ int ft_strlen(char *str)
     while (str[i])
         i++;
     return (i);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+{
+	size_t	i;
+	size_t	len;
+
+	i = 0;
+	len = 0;
+	len = ft_strlen((char *)src);
+	if (size == 0)
+		return (len);
+	size--;
+	while (i < size && src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (len);
 }
 
 char *ft_strjoin(char* s1, char* s2)
@@ -48,12 +68,141 @@ char *ft_strjoin(char* s1, char* s2)
     return (res);
 }
 
-int main(int ac, char **env)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-    // int i = -1;
-    char *av[] = {"ls","-l",NULL};
-    char *path = "/usr/bin/ls ";
-    char *str = readline("taha/>:~ ");
-    // char *res = ft_strjoin(path,str);
-    execve(path,av,env);
+	size_t	i;
+
+	i = 0;
+	while ((s1[i] || s2[i]) && i < n)
+	{
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	return (0);
+}
+
+char *get_path(char **env)
+{
+    int i = -1;
+    while (env[++i])
+    {
+        if (ft_strncmp(env[i],"PATH",4) == 0)
+            return (env[i]);
+    }
+    return (NULL);
+}
+
+static char	**free_if_error(char **ptr)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i])
+	{
+		free(ptr[i]);
+		i++;
+	}
+	free(ptr);
+	return (NULL);
+}
+
+static int	count_strs(char const *str, char c)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (str && str[i])
+	{
+		if (str[i] == c)
+		{
+			while (str[i] && str[i] == c)
+				i++;
+		}
+		else
+		{
+			count++;
+			while (str[i] && str[i] != c)
+				i++;
+		}
+	}
+	return (count);
+}
+
+static size_t	get_strs_size(char const *str, char c)
+{
+	size_t	i;
+
+	i = 0;
+	while (str && str[i] && str[i] != c)
+		i++;
+	return (i);
+}
+
+static char	**start_spliting(char **res, char const *s, char c)
+{
+	int		s_index;
+	int		i;
+	size_t	str_size;
+	char	*str;
+
+	i = 0;
+	s_index = 0;
+	while (s && s[i])
+	{
+		str_size = get_strs_size(s + i, c);
+		if (!str_size)
+			i++;
+		else
+		{
+			str = malloc(sizeof(char) * (str_size + 1));
+			if (!str)
+				return (free_if_error(res));
+			ft_strlcpy(str, s + i, str_size + 1);
+			res[s_index] = str;
+			s_index++;
+			i += str_size;
+		}
+	}
+	res[s_index] = 0;
+	return (res);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**res;
+
+	if (!s)
+		return (NULL);
+	res = malloc(sizeof(char *) * (count_strs(s, c) + 1));
+	if (!res)
+		return (NULL);
+	return (start_spliting(res, s, c));
+}
+
+int move_path(char *str)
+{
+    int i = 0;
+    while (str[i] && str[i] != ':')
+        i++;
+    return (i);
+}
+
+char **split_path(char *old_path)
+{
+    int i = move_path(old_path);
+    int j = -1;
+    char **new_path = ft_split(old_path + i + 1,':');
+    return (new_path);
+}
+
+int main(int ac, char **av, char **env)
+{
+    (void)ac;
+    (void)av;
+    int i = -1;
+    char *envpath = get_path(env);
+    char **path = split_path(envpath);
 }

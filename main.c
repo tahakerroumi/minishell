@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ta7ino <ta7ino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 08:49:08 by ta7ino            #+#    #+#             */
-/*   Updated: 2024/08/11 15:33:28 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/08/13 21:55:39 by ta7ino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,6 @@ int move_path(char *str)
 char **split_path(char *old_path)
 {
     int i = move_path(old_path);
-    int j = -1;
     char **new_path = ft_split(old_path + i + 1,':');
     return (new_path);
 }
@@ -213,20 +212,40 @@ char	*check_exec(char **path,char *command)
 	return (NULL);
 }
 
-int main(int ac, char **av, char **env)
+void	minishell(char **env, char *prompt)
 {
-    (void)ac;
-    (void)av;
-	char *idk;
+	char *cmd;
     char *envpath = get_path(env);
     char **path = split_path(envpath);
-	char *prompt = readline("taha's shell:~ ");
 	char **command = ft_split(prompt,' ');
-	idk = ft_strjoin("/",command[0]);
-	char *exec = check_exec(path, idk); // exec first arg;
+	cmd = ft_strjoin("/",command[0]);
+	char *exec = check_exec(path, cmd); // exec first arg;
 	if (!exec)
-		return(printf("command not found"));
+	{
+		printf("command not found\n");
+		return ;
+	}
 	int one = execve(exec,command,env);
 	if (one == -1)
-		printf("command not found");
+		printf("command not found\n");
+}
+
+int main(int ac, char **av, char **env)
+{
+	(void)ac;
+    (void)av;
+	char *prompt;
+	while (1)
+	{
+		prompt = readline("taha's shell:~ ");
+		if (!prompt)
+			return (0);
+		if (ft_strlen(prompt) > 0)
+		{
+			add_history(prompt);
+			minishell(env,prompt);
+		}
+		free(prompt);
+	}
+	return (0);
 }

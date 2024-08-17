@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 08:49:08 by ta7ino            #+#    #+#             */
-/*   Updated: 2024/08/14 21:10:12 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/08/17 11:50:13 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int move_path(char *str)
 char **split_path(char *old_path)
 {
     int i = move_path(old_path);
-    char **new_path = ft_split(old_path + i + 1,':');
+    char **new_path = ft_split(old_path + i + 1, ':');
     return (new_path);
 }
 
@@ -48,9 +48,22 @@ char	*check_exec(char **path,char *command)
 		char *str = ft_strjoin(path[i], command);
 		if (!access(str,F_OK))
 			return (str);
+		free(str);
 		i++;
 	}
 	return (NULL);
+}
+
+void	ft_free_double(char **str)
+{
+	int i = 0;
+	
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
 }
 
 void	executable(char **env, char *prompt)
@@ -64,10 +77,13 @@ void	executable(char **env, char *prompt)
 	if (!exec)
 	{
 		printf("%s: command not found\n",prompt);
+		free(cmd);
+		ft_free_double(path);
 		return ;
 	}
-	int one = execve(exec,command,env);
-	printf("SUCCESS");
+	// free(cmd);
+	// ft_free_double(path);
+	int one = execve(exec,command,NULL);
 	if (one == -1)
 		printf("%s command not found\n",prompt);
 }
@@ -75,21 +91,23 @@ void	executable(char **env, char *prompt)
 void	minishell(char **env, char *prompt)
 {
 	pid_t pid;
-	// if (!ft_strncmp(prompt,"exit",5))
-	// {
-		// implement exit
-	// }
-	// else
-	// {
-	pid = fork();
-	if (pid == 0)
-		executable(env,prompt);
+	if (!ft_strncmp(prompt,"exit",5))
+	{
+		free(prompt);
+		exit(0);
+	}
 	else
 	{
-		int status;
-		waitpid(pid,&status,0);
+		pid = fork();
+		if (pid == 0)
+			executable(env,prompt);
+		else
+		{
+			int status;
+			waitpid(pid,&status,0);
+			printf("\n%d\n",status);
+		}
 	}
-	// }
 }
 
 int main(int ac, char **av, char **env)
@@ -99,7 +117,7 @@ int main(int ac, char **av, char **env)
 	char *prompt;
 	while (1)
 	{
-		prompt = readline("taha's shell:~ ");
+		prompt = readline("shymphony@land ~> ");
 		if (!prompt)
 			return (0);
 		if (ft_strlen(prompt) > 0)

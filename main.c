@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ta7ino <ta7ino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 08:49:08 by ta7ino            #+#    #+#             */
-/*   Updated: 2024/08/18 15:55:22 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/08/20 13:34:55 by ta7ino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,20 +125,42 @@
 // 	}
 // }
 
-void	minishell(char **env)
+int	len_of_env(char **str)
 {
-	char	**my_env;
-	char	*tmp;
-	int		i;
-	int		len;
+	int	i;
 
 	i = 0;
-	len = 0;
-	while (env[i])
+	while (str[i])
+		i++;
+	return (i);
+}
+
+char	**envir_copy(char **env)
+{
+	char	**my_env;
+	int		i;
+
+	i = 0;
+	my_env = (char **)ft_calloc(sizeof(char *), len_of_env(env) + 1);
+	if (!my_env)
+		return (NULL);
+	while(env[i])
 	{
-		tmp = malloc(ft_strlen(env[i]) * sizeof(char *));
-		
+		my_env[i] = ft_strdup(env[i]);
+		i++;
 	}
+	my_env[i] = NULL;
+	return (my_env);
+}
+
+void	minishell(char **old_env)
+{
+	char **env;
+	int i = 0;
+
+	env = envir_copy(old_env);
+	while (env[i])
+		printf("%s\n",env[i++]);
 }
 
 int main(int ac, char **av, char **env)

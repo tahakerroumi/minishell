@@ -6,7 +6,7 @@
 /*   By: ta7ino <ta7ino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 08:49:08 by ta7ino            #+#    #+#             */
-/*   Updated: 2024/08/20 14:21:48 by ta7ino           ###   ########.fr       */
+/*   Updated: 2024/08/21 15:38:00 by ta7ino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*check_exec(char **path,char *command)
 	return (NULL);
 }
 
-void	executable(char **env, char *prompt)
+void	exec(char **env, char *prompt)
 {
 	char *cmd;
     char *envpath = get_path(env,"PATH");
@@ -100,6 +100,19 @@ void	executable(char **env, char *prompt)
 	}
 }
 
+void	executable(char **env,char *prompt)
+{
+	int pid[2];
+	
+	// is heredoc
+	
+	// if pipe
+	
+	// is builtin
+	
+	// else is exec 
+}
+
 void	ft_start(char **env, char *prompt)
 {
 	pid_t pid;
@@ -112,7 +125,7 @@ void	ft_start(char **env, char *prompt)
 	{
 		pid = fork();
 		if (pid == 0)
-			check_exec(env,prompt);
+			executable(env,prompt);
 		else
 		{
 			int status;
@@ -122,14 +135,6 @@ void	ft_start(char **env, char *prompt)
 	}
 }
 
-void	ft_signal(int signal)
-{
-	if (signal == 2)
-		return ;
-	else
-		exit(0);
-}
-
 void	minishell(char **old_env)
 {
 	char	**env;
@@ -137,9 +142,6 @@ void	minishell(char **old_env)
 
 	while (1)
 	{
-		if (signal(SIGINT, ft_signal) \
-		|| signal(SIGQUIT, ft_signal))
-			continue ;
 		prompt = readline("shymphony@land~> ");
 		env = envir_copy(old_env);
 		ft_start(env, prompt);

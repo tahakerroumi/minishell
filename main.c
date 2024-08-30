@@ -6,7 +6,7 @@
 /*   By: ta7ino <ta7ino@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 08:49:08 by ta7ino            #+#    #+#             */
-/*   Updated: 2024/08/21 15:38:00 by ta7ino           ###   ########.fr       */
+/*   Updated: 2024/08/30 16:02:28 by ta7ino           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ void	ft_start(char **env, char *prompt)
 	}
 }
 
+
+
 void	minishell(char **old_env)
 {
 	char	**env;
@@ -143,6 +145,7 @@ void	minishell(char **old_env)
 	while (1)
 	{
 		prompt = readline("shymphony@land~> ");
+		tree_list(prompt);
 		env = envir_copy(old_env);
 		ft_start(env, prompt);
 	}

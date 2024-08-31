@@ -6,7 +6,7 @@ EXEC = minishell
 
 LIBFT = libft/libft.a
 
-SRC = main.c env.c
+SRC = main.c
 
 OBJ = $(SRC:%.c=%.o)
 

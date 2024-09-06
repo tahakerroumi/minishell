@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ta7ino <ta7ino@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 18:42:06 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/08/30 16:17:48 by ta7ino           ###   ########.fr       */
+/*   Updated: 2024/09/06 06:43:44 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ typedef struct t_command
     t_command *right;
 }               t_command;
 
-typedef struct t_pipe
-{
-    t_command *cmd;
+// typedef struct t_pipe
+// {
+//     t_command *cmd;
     
-}
+// }
 
 // env
 char	**envir_copy(char **env);

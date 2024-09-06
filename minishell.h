@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 00:59:31 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/02 16:30:46 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:42:17 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,25 @@
 # include <sys/wait.h>
 # include "libft/libft.h"
 
-#define CMD_SIMPLE 0       // Simple command (e.g., "ls")
-#define CMD_PIPE 1         // Pipe (e.g., "cmd1 | cmd2")
-#define CMD_REDIRECT_IN 2  // Input redirection (e.g., "< input.txt")
-#define CMD_REDIRECT_OUT 3 // Output redirection (e.g., "> output.txt")
-#define CMD_APPEND 4       // Append redirection (e.g., ">> output.txt")
-#define CMD_HEREDOC 5      // Heredoc (e.g., "<< EOF")
 
-typedef struct s_command {
-    int type;              // Type of the command or operation (using integer constants)
-    char *cmd_name;        // Command name (e.g., "ls")
-    char **args;           // Arguments (e.g., ["-la", "/home"])
-    char *filename;        // Filename for redirections (e.g., "input.txt")
-    char *heredoc_delim;   // Delimiter for heredoc (e.g., "EOF")
-    struct s_command *left;  // Left subtree (e.g., left side of a pipe)
-    struct s_command *right; // Right subtree (e.g., right side of a pipe)
+typedef enum s_type
+{
+    CMD_SIMPLE,
+    CMD_PIPE,
+    CMD_REDIRECT_OUT,
+    CMD_APPEND,
+    CMD_HEREDOC
+}           e_type;
+
+typedef struct s_command
+{
+    e_type  type;              // Type of the command or operation (using integer constants)
+    char    *cmd_name;        // Command name (e.g., "ls")
+    char    **args;           // Arguments (e.g., ["-la", "/home"])
+    char    *filename;        // Filename for redirections (e.g., "input.txt")
+    char    *heredoc_delim;   // Delimiter for heredoc (e.g., "EOF")
+    struct  s_command *left;  // Left subtree (e.g., left side of a pipe)
+    struct  s_command *right; // Right subtree (e.g., right side of a pipe)
 }              t_command;
 
 #endif

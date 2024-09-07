@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "types.h": "c",
-        "history.h": "c",
-        "libft.h": "c"
-    }
-}

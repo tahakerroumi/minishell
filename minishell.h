@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 00:59:31 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/05 14:42:17 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/07 03:40:15 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include "libft/libft.h"
+# include "libft/libft.h"
+char	**envir_copy(char **env);
+int	len_of_env(char **str);
 
 
 typedef enum s_type

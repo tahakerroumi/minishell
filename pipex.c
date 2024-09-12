@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:09:24 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/10 16:59:47 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/12 14:28:59 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,11 @@ char	**envir_copy(char **env)
 	return (my_env);
 }
 
-void	ft_perror(char *str)
-{
-	perror(str);
-	exit(1);
-}
+// void	ft_perror(char *str)
+// {
+// 	perror(str);
+// 	exit(1);
+// }
 
 // int	pipex(char ***cmd, char **env, int num)
 // {
@@ -166,66 +166,139 @@ void	ft_perror(char *str)
 // 	return(exit_status);
 // }
 
+void ft_perror(char *msg)
+{
+    perror(msg);
+    exit(EXIT_FAILURE);
+}
+
+pid_t ft_fork()
+{
+    pid_t pid = fork();
+    if (pid < 0)
+        ft_perror("fork");
+    return pid;
+}
+
+void ft_pipe(int *fd)
+{
+    if (pipe(fd) == -1)
+        ft_perror("pipe");
+}
+
+void	close_fds(int *fd, int i)
+{
+	if (i > 0)
+	{
+		close(fd[0]);
+		close(fd[1]);
+	}
+}
+
+void	ft_dup2_w(int *fd)
+{
+	dup2(fd[1], STDOUT_FILENO);
+	close(fd[1]);
+	close(fd[0]);
+}
+
+void	ft_dup2_r(int *fd)
+{
+	dup2(fd[0], STDIN_FILENO);
+	close(fd[0]);
+	close(fd[1]);
+}
+
+void	ft_execve(char **cmd, char **env)
+{
+	if (execve(cmd[0], cmd, env) == -1)
+		ft_perror("execve");
+}
+
+int	ft_waitpid(int *pid, int num)
+{
+	int exit_status;
+	int i;
+
+	i = -1;
+	while (++i < num)
+		waitpid(pid[i], &exit_status, 0);
+	return (exit_status);
+}
+// int	pipex(char ***cmd, char **env, int num)
+// {
+// 	int fd[num - 1][2];  // Pipes array
+// 	int i = 0;
+// 	int pids[num];       // Store process IDs for each command
+
+// 	while (i < num)
+// 	{
+// 		if (i < num - 1) // Create a pipe if not the last command
+// 			ft_pipe(fd[i]);
+
+// 		pids[i] = ft_fork();
+// 		if (pids[i] == 0)  // Child process
+// 		{
+// 			// First command (only writes to the pipe)
+// 			if (i == 0 && num > 1)
+// 				ft_dup2_w(fd[i]);
+
+// 			// Last command (only reads from the previous pipe)
+// 			else if (i == num - 1 && num > 1)
+// 				ft_dup2_r(fd[i - 1]);
+
+// 			// Middle commands (if more than two commands are used)
+// 			else if (i > 0 && i < num - 1)
+// 			{
+// 				ft_dup2_r(fd[i - 1]);
+// 				ft_dup2_w(fd[i]);
+// 			}
+
+// 			ft_execve(cmd[i], env);  // Execute the command
+// 		}
+
+// 		// Parent process closes the pipes after use
+// 		if (i > 0)  // Close previous pipe in the parent
+// 		{
+// 			close(fd[i - 1][0]);
+// 			close(fd[i - 1][1]);
+// 		}
+
+// 		i++;
+// 	}
+
+// 	return (ft_waitpid(pids, num));  // Wait for all child processes
+// }
+
 int	pipex(char ***cmd, char **env, int num)
 {
-	int n = num - 1;
-	int fd[n][2];
-	int exit_status;
-	int pid;
+	int fd[num - 1][2];
 	int i = 0;
 	int pids[num];
 
-	while (*cmd)
+	while (i < num)
 	{
-		if (i < n && pipe(fd[i]) == -1)
-			ft_perror("pipe");
-		pids[i] = fork();
-		if (pids[i] < 0)
-			ft_perror("fork");
+		if (cmd[i + 1])
+			ft_pipe(fd[i]);
+		pids[i] = ft_fork();
 		if (pids[i] == 0)
 		{
 			if (i == 0)
-			{
-				dup2(fd[i][1], STDOUT_FILENO);
-				close(fd[i][1]);
-				close(fd[i][0]);
-			}
-			else if (!*(cmd + 1))
-			{
-				close(fd[i - 1][1]);
-				dup2(fd[i - 1][0], STDIN_FILENO);
-				close(fd[i - 1][0]);
-			}
+				ft_dup2_w(fd[i]);
+			else if (!cmd[i + 1])
+				ft_dup2_r(fd[i - 1]);
 			else
 			{
-				close(fd[i - 1][1]);
-				dup2(fd[i - 1][0], STDIN_FILENO);
-				close(fd[i - 1][0]);
-				dup2(fd[i][1], STDOUT_FILENO);
-				close(fd[i][1]);
-				close(fd[i][0]);
+				ft_dup2_r(fd[i - 1]);
+				ft_dup2_w(fd[i]);
 			}
-			execve(*cmd[0], *cmd, env);
-			ft_perror("execve");
+			ft_execve(cmd[i], env);
 		}
 		else
-		{
-			if (i > 0)
-			{
-				close(fd[i - 1][0]);
-				close(fd[i - 1][1]);
-			}
-		}
-		i++;
-		cmd++;
-	}
-	i = 0;
-	while (i < num)
-	{
-		waitpid(pids[i], &exit_status, 0);
+			close_fds(fd[i - 1], i);
 		i++;
 	}
-	return (exit_status);
+	return (WEXITSTATUS(ft_waitpid(pids, num)));
 }
 
 int main(int ac, char **av, char **env)
@@ -234,12 +307,12 @@ int main(int ac, char **av, char **env)
     char **envir;
 
     envir = envir_copy(env);
-    char *ls[] = {"/bin/caddt", NULL};
-    char *pwd[] = {"/bin/cat", "-e",  NULL};
-    char *o[] = {"/bin/pwd",  NULL};
-    char *nomore[] = {"/bin/wc", "-l",  NULL};
-    char *fr[] = {"/bin/lsds", "-la",  NULL};
-    char **cmds[] = {ls, pwd, o, nomore, fr, NULL};
-    i = pipex(cmds, envir, 5);
+    char *cmd1[] = {"/bin/caasdt", NULL};
+    char *cmd2[] = {"/bin/cat",  "-e",NULL};
+    // char *cmd3[] = {"/bin/pwd",  NULL};
+    // char *cmd4[] = {"/bin/wc", "-l",  NULL};
+    // char *cmd5[] = {"/bin/lsds", "-la",  NULL};
+    char **cmds[] = {cmd1, cmd2 ,NULL};
+    i = pipex(cmds, envir, 2);
 	printf("\n\n%d\n\n", i);
 }

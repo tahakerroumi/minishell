@@ -4,30 +4,23 @@ CFLAGS = -Wall -Wextra -Werror
 
 EXEC = minishell
 
-LIBFT = libft/libft.a
-
-SRC = main.c
+SRC = srcs/main.c srcs/split_int_ptr.c srcs/executor.c \
 
 OBJ = $(SRC:%.c=%.o)
 
 all: $(EXEC)
 
-$(EXEC): $(OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $(EXEC)
+$(EXEC): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -lreadline -o $(EXEC)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(LIBFT):
-		make -C libft/
-
 clean:
 	rm -rf $(OBJ)
-	make clean -C libft/
 
 fclean: clean
 	rm -rf $(EXEC)
-	make fclean -C libft/
 
 re: fclean all
 

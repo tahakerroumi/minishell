@@ -6,11 +6,11 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:09:24 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/12 14:28:59 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/14 11:29:37 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 
 void	ft_bzero(void *s, size_t n)
 {

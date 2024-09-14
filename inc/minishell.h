@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/13 16:58:18 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/14 18:43:52 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
+# include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -107,6 +109,7 @@ typedef struct	s_command
 {
 	char				*path;
 	char				**argv;
+	int					max;
 	t_file				*file;
 	struct s_command	*next;
 }	t_command;
@@ -118,6 +121,15 @@ typedef struct	s_root
 	int			exit_status;
 	int			end_loop;
 }	t_root;
+
+// tools
+char	*ft_strrchr(char *s, int c);
+int	ft_strncmp(char *s1, char *s2, size_t n);
+char	**ft_split(char *s, char c);
+char	*ft_strjoin(char *s1, char *s2);
+size_t	ft_strlcpy(char *dst, char *src, size_t size);
+char	*ft_strdup(char *s1);
+int	ft_strlen(char *str);
 
 // execution
 void    executor(t_command *cmd);

@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 EXEC = minishell
 
-SRC = srcs/main.c srcs/split_int_ptr.c srcs/executor.c \
+SRC = srcs/main.c srcs/split_int_ptr.c srcs/executor.c srcs/tools.c srcs/ft_split.c srcs/lib_v2.c
 
 OBJ = $(SRC:%.c=%.o)
 

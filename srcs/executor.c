@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 15:43:25 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/14 18:55:26 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:51:04 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,11 @@ void	is_absolute(t_command *cmd)
 {
 	struct stat st;
 
-	if (access(cmd->argv[0], F_OK) != 0) // F_OK  Used to check for the existence of a file.
+	if (access(cmd->argv[0], F_OK) != 0)// F_OK  Used to check for the existence of a file.
+	{
         printf("symphony: %s: No such file or directory\n", cmd->argv[0]);
+		exit(127);
+	} 
     else if (access(cmd->argv[0], X_OK) == 0) // X_OK flag: Used to check for execute permission bit.
 	{
         if (stat(cmd->argv[0], &st) == 0)
@@ -68,7 +71,10 @@ void	is_absolute(t_command *cmd)
         }
     }
     else
+	{
         printf("symphony: %s: Permission denied\n", cmd->argv[0]);
+	}
+	exit(126);
 }
 
 char *move_path(char *path)
@@ -129,6 +135,7 @@ void	executable(t_command *cmd)
 	char *getpath = envpath(g_root.env);
 	char **path = ft_split(getpath, ':');
 	exec(path,cmd);
+	exit(127);
 }
 
 void	execute_command(t_command *cmd)
@@ -137,8 +144,6 @@ void	execute_command(t_command *cmd)
 	pid_t	pid;
 
 // 1 - is builtin
-// 2 - is abseloute starts with "/"
-// 3 - is relative starts with "./"
 // 4 - its a normal command.
 
 	pid = ft_fork();

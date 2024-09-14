@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/14 18:43:52 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:39:38 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,12 @@ typedef struct	s_root
 
 // tools
 char	*ft_strrchr(char *s, int c);
-int	ft_strncmp(char *s1, char *s2, size_t n);
-char	**ft_split(char *s, char c);
+int		ft_strncmp(char *s1, char *s2, size_t n);
 char	*ft_strjoin(char *s1, char *s2);
-size_t	ft_strlcpy(char *dst, char *src, size_t size);
-char	*ft_strdup(char *s1);
-int	ft_strlen(char *str);
+size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+char	*ft_strdup(const char *s1);
+char	**ft_split(char const *s, char c);
+int		ft_strlen(const char *str);
 
 // execution
 void    executor(t_command *cmd);

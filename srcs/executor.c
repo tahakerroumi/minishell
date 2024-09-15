@@ -6,11 +6,23 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 15:43:25 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/14 20:51:04 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/15 21:25:59 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+// void	ft_putstr_fd(char *s, int fd)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (s[i])
+// 	{
+// 		write(fd, &s[i], 1);
+// 		i++;
+// 	}
+// }
 
 void ft_perror(char *msg)
 {
@@ -24,6 +36,12 @@ pid_t ft_fork()
     if (pid < 0)
         ft_perror("fork");
     return pid;
+}
+
+void ft_pipe(int *fd)
+{
+    if (pipe(fd) == -1)
+        ft_perror("pipe");
 }
 
 // int	exec_builtin(t_command *cmd)
@@ -57,7 +75,7 @@ void	is_absolute(t_command *cmd)
 
 	if (access(cmd->argv[0], F_OK) != 0)// F_OK  Used to check for the existence of a file.
 	{
-        printf("symphony: %s: No such file or directory\n", cmd->argv[0]);
+		ft_putstr_fd("No such file or directory\n", 2);
 		exit(127);
 	} 
     else if (access(cmd->argv[0], X_OK) == 0) // X_OK flag: Used to check for execute permission bit.
@@ -65,16 +83,13 @@ void	is_absolute(t_command *cmd)
         if (stat(cmd->argv[0], &st) == 0)
 		{
             if (S_ISDIR(st.st_mode))
-                printf("symphony: %s: Is a directory\n", cmd->argv[0]);
+				ft_putstr_fd("Is a directory\n", 2);
             else if (S_ISREG(st.st_mode)) // S_ISREG is regular file
                 ft_execve(cmd);
         }
     }
     else
-	{
-        printf("symphony: %s: Permission denied\n", cmd->argv[0]);
-	}
-	exit(126);
+		ft_putstr_fd("Permission denied\n", 2);
 }
 
 char *move_path(char *path)
@@ -127,7 +142,7 @@ void	exec(char **path, t_command *cmd)
 	}
 	// check if somehow no path was found
 	if (access(pathname, F_OK | X_OK) == -1)
-		printf("%s : Command not found\n", cmd->argv[0]);
+		ft_putstr_fd("Command not found\n", 2);
 }
 
 void	executable(t_command *cmd)
@@ -135,7 +150,104 @@ void	executable(t_command *cmd)
 	char *getpath = envpath(g_root.env);
 	char **path = ft_split(getpath, ':');
 	exec(path,cmd);
-	exit(127);
+	return ;
+}
+
+void	red_filein(t_file *file)
+{
+	int fd;
+	t_file *txt;
+
+	txt = file;
+	while (txt->type == FILE_IN)
+	{
+		if (!txt->next || txt->next->type != FILE_IN)
+			break ;
+		fd = open(txt->name, O_RDONLY);
+		if (fd < 0)
+		{
+			ft_putstr_fd("No such file or directory\n", 2);
+			exit(1);
+		}
+		close(fd);
+		txt = txt->next;
+	}
+	fd = open(txt->name, O_RDONLY);
+	if (fd < 0)
+	{
+		ft_putstr_fd("No such file or directory\n", 2);
+		exit(1);
+	}
+	if (dup2(fd, STDIN_FILENO) < 0)
+		ft_perror("dup2");
+	close(fd);
+}
+
+void	red_fileout(t_file *file)
+{
+	int fd;
+	struct stat st;
+	t_file *txt;
+
+	txt = file;
+	while (txt->type == FILE_OUT)
+	{
+		if (!txt->next || txt->next->type != FILE_OUT)
+			break ;
+		if (!stat(txt->name, &st) && S_ISDIR(st.st_mode))
+		{
+			printf("symphony: %s: Is a directory\n", txt->name);
+			exit(1);
+		}
+		if (txt->type == FILE_APPEND)
+			fd = open (txt->name, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (txt->type == FILE_OUT)
+			fd = open (txt->name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (fd < 0)
+		{
+			ft_perror("open");
+			exit(1);
+		}
+		close(fd);
+		txt = txt->next;
+	}
+	if (!stat(txt->name, &st) && S_ISDIR(st.st_mode))
+	{
+		ft_putstr_fd("Is a directory\n", 2);
+		exit(1);
+	}
+	if (txt->type == FILE_APPEND)
+		fd = open (txt->name, O_CREAT | O_WRONLY | O_APPEND, 0644);
+	if (txt->type == FILE_OUT)
+		fd = open (txt->name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd < 0)
+	{
+		ft_perror("open");
+		exit(1);
+	}
+	if (dup2(fd, STDOUT_FILENO) < 0)
+		ft_perror("dup2");
+	close(fd);
+}
+
+void	redirections(t_command *cmd)
+{
+	t_file *txt;
+
+	txt = cmd->file;
+	while (txt)
+	{
+		if (txt->type == FILE_AMBIGUOUS)
+		{
+			ft_putstr_fd("ambiguous redirect", 2);
+			exit(1);
+		}
+		if (txt->type == FILE_IN)
+			red_filein(txt);
+		if (txt->type == FILE_OUT || txt->type == FILE_APPEND)
+			red_fileout(txt);
+		txt = txt->next;
+	}
 }
 
 void	execute_command(t_command *cmd)
@@ -143,20 +255,36 @@ void	execute_command(t_command *cmd)
 	int		exit_status;
 	pid_t	pid;
 
-// 1 - is builtin
-// 4 - its a normal command.
-
+	// if (cmd->file)
+	// 	redirections(cmd);
+	// if (exec_builtin(cmd))
 	pid = ft_fork();
 	if (pid == 0)
 	{
-		// if (exec_builtin(cmd))
-		// 	return (0);
+		if (cmd->file)
+			redirections(cmd);
 		if (ft_strrchr(cmd->argv[0], '/'))
 			is_absolute(cmd);
 		else
 			executable(cmd);
+		exit(1);
 	}
 	waitpid(pid, &exit_status, 0);
+}
+
+void	pipex(t_command *cmd)
+{
+	int			fd[cmd->max - 1][2];
+	int i;
+	int			pid[cmd->max];
+
+	i = 0;
+	while (i < cmd->max)
+	{
+		if (i < cmd->max - 1)
+			ft_pipe(fd[i]);
+		
+	}
 }
 
 int	number_commands(t_command *cmd)
@@ -178,7 +306,7 @@ void    executor(t_command *cmd)
 {
 	cmd->max = number_commands(cmd);
 	if (cmd->max > 1)
-		printf("need to be done");
+		pipex(cmd);
 	else
 		execute_command(cmd);
 }

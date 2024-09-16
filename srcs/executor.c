@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 15:43:25 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/15 21:25:59 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:09:48 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,28 +159,19 @@ void	red_filein(t_file *file)
 	t_file *txt;
 
 	txt = file;
-	while (txt->type == FILE_IN)
+	while (txt && txt->type == FILE_IN)
 	{
-		if (!txt->next || txt->next->type != FILE_IN)
-			break ;
 		fd = open(txt->name, O_RDONLY);
 		if (fd < 0)
 		{
 			ft_putstr_fd("No such file or directory\n", 2);
 			exit(1);
 		}
+		if (dup2(fd, STDIN_FILENO) < 0)
+			ft_perror("dup2");
 		close(fd);
 		txt = txt->next;
 	}
-	fd = open(txt->name, O_RDONLY);
-	if (fd < 0)
-	{
-		ft_putstr_fd("No such file or directory\n", 2);
-		exit(1);
-	}
-	if (dup2(fd, STDIN_FILENO) < 0)
-		ft_perror("dup2");
-	close(fd);
 }
 
 void	red_fileout(t_file *file)
@@ -190,10 +181,8 @@ void	red_fileout(t_file *file)
 	t_file *txt;
 
 	txt = file;
-	while (txt->type == FILE_OUT)
+	while (txt && txt->type == FILE_OUT)
 	{
-		if (!txt->next || txt->next->type != FILE_OUT)
-			break ;
 		if (!stat(txt->name, &st) && S_ISDIR(st.st_mode))
 		{
 			printf("symphony: %s: Is a directory\n", txt->name);
@@ -204,30 +193,12 @@ void	red_fileout(t_file *file)
 		if (txt->type == FILE_OUT)
 			fd = open (txt->name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
-		{
 			ft_perror("open");
-			exit(1);
-		}
+		if (dup2(fd, STDOUT_FILENO) < 0)
+			ft_perror("dup2");
 		close(fd);
 		txt = txt->next;
 	}
-	if (!stat(txt->name, &st) && S_ISDIR(st.st_mode))
-	{
-		ft_putstr_fd("Is a directory\n", 2);
-		exit(1);
-	}
-	if (txt->type == FILE_APPEND)
-		fd = open (txt->name, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	if (txt->type == FILE_OUT)
-		fd = open (txt->name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd < 0)
-	{
-		ft_perror("open");
-		exit(1);
-	}
-	if (dup2(fd, STDOUT_FILENO) < 0)
-		ft_perror("dup2");
-	close(fd);
 }
 
 void	redirections(t_command *cmd)
@@ -252,60 +223,129 @@ void	redirections(t_command *cmd)
 
 void	execute_command(t_command *cmd)
 {
-	int		exit_status;
-	pid_t	pid;
+	// int		exit_status;
+	// pid_t	pid;
 
-	// if (cmd->file)
-	// 	redirections(cmd);
 	// if (exec_builtin(cmd))
-	pid = ft_fork();
-	if (pid == 0)
-	{
-		if (cmd->file)
-			redirections(cmd);
+	// pid = ft_fork();
+	// if (pid == 0)
+	// {
+		// if (cmd->file)
+		// 	redirections(cmd);
+			// printf("taha\n");
+			// exit(1);
 		if (ft_strrchr(cmd->argv[0], '/'))
 			is_absolute(cmd);
 		else
 			executable(cmd);
 		exit(1);
-	}
-	waitpid(pid, &exit_status, 0);
+	// }
+	// waitpid(pid, &exit_status, 0);
 }
 
-void	pipex(t_command *cmd)
-{
-	int			fd[cmd->max - 1][2];
-	int i;
-	int			pid[cmd->max];
+// void	close_fds(int *fd, int i)
+// {
+// 	printf("taha\n");
+// 	if (i > 0)
+// 	{
+// 		close(fd[0]);
+// 		close(fd[1]);
+// 	}
+// }
 
-	i = 0;
-	while (i < cmd->max)
-	{
-		if (i < cmd->max - 1)
-			ft_pipe(fd[i]);
-		
-	}
-}
+// void	ft_dup2_w(int *fd)
+// {
+// 	dup2(fd[1], STDOUT_FILENO);
+// 	close(fd[1]);
+// 	close(fd[0]);
+// }
 
-int	number_commands(t_command *cmd)
-{
-	t_command *token;
-	int i;
+// void	ft_dup2_r(int *fd)
+// {
+// 	dup2(fd[0], STDIN_FILENO);
+// 	close(fd[0]);
+// 	close(fd[1]);
+// }
 
-	i = 0;
-	token = cmd;
-	while (token)
-	{
-		i++;
-		token = token->next;
-	}
-	return (i);
-}
+// void	ft_output(int i, int max)
+// {
+// 	if (i == 0)
+// 		ft_dup2_w();
+// }
+
+// void	ft_waitpid(int *pid, int num)
+// {
+// 	int exit_status;
+// 	int i;
+
+// 	i = -1;
+// 	while (++i < num)
+// 		waitpid(pid[i], &exit_status, 0);
+// }
+
+
+// int	number_commands(t_command *cmd)
+// {
+// 	t_command *token;
+// 	int i;
+
+// 	i = 0;
+// 	token = cmd;
+// 	while (token)
+// 	{
+// 		i++;
+// 		token = token->next;
+// 	}
+// 	return (i);
+// }
+
+// void	pipex(t_command *command)
+// {
+// 	int			fd[command->max - 1][2];
+// 	pid_t		pid[command->max];
+// 	t_command	*cmd;
+
+// 	cmd = command;
+// 	cmd->i = 0;
+// 	pid[cmd->i] = 0;
+// 	if (pid[cmd->i] == 0)
+// 	{
+// 		printf("taha\n");
+// 		exit(1);
+// 	}
+// 	cmd->max = number_commands(cmd);
+// 	printf("cmd->max%d\n", cmd->max);
+// 	while (cmd->i < cmd->max)
+// 	{
+// 		printf("taha %d\n", pid[cmd->i]);
+// 		if (cmd->next)
+// 			ft_pipe(fd[cmd->i]);
+// 		pid[cmd->i] = fork();
+// 		if (pid[cmd->i] == 0)
+// 		{
+// 			if (cmd->i == 0)
+// 				ft_dup2_w(fd[cmd->i]);
+// 			else if (!cmd->next)
+// 				ft_dup2_r(fd[cmd->i - 1]);
+// 			else
+// 			{
+// 				ft_dup2_r(fd[cmd->i - 1]);
+// 				ft_dup2_w(fd[cmd->i]);
+// 			}
+// 			redirections(cmd);
+// 			execute_command(cmd);
+// 		}
+// 		else
+// 			close_fds(fd[cmd->i - 1], cmd->i);
+// 		cmd->i++;
+// 		cmd = cmd->next;
+// 	}
+// 	ft_waitpid(pid, cmd->max);
+// }
 
 void    executor(t_command *cmd)
 {
-	cmd->max = number_commands(cmd);
-	if (cmd->max > 1)
+	if (cmd->next)
 		pipex(cmd);
 	else
 		execute_command(cmd);

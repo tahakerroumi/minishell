@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/15 19:01:51 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:08:57 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ typedef struct	s_command
 {
 	char				*path;
 	char				**argv;
-	int					max;
+	// int					max;
+	// int					i;
 	t_file				*file;
 	struct s_command	*next;
 }	t_command;

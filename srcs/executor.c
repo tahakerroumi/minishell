@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 15:43:25 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/16 16:09:48 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/17 13:44:59 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ void ft_perror(char *msg)
     exit(EXIT_FAILURE);
 }
 
-pid_t ft_fork()
+pid_t ft_fork(void)
 {
     pid_t pid = fork();
     if (pid < 0)
         ft_perror("fork");
-    return pid;
+    return (pid);
 }
 
 void ft_pipe(int *fd)
@@ -201,11 +201,12 @@ void	red_fileout(t_file *file)
 	}
 }
 
-void	redirections(t_command *cmd)
+void	redirections(t_file *file)
 {
 	t_file *txt;
 
-	txt = cmd->file;
+	txt = file;
+	
 	while (txt)
 	{
 		if (txt->type == FILE_AMBIGUOUS)
@@ -220,27 +221,30 @@ void	redirections(t_command *cmd)
 		txt = txt->next;
 	}
 }
+void	all_cmds(t_command *cmd)
+{
+	// if its a builtin
+	if (ft_strrchr(cmd->argv[0], '/'))
+		is_absolute(cmd);
+	else
+		executable(cmd);
+	exit(1);
+}
 
 void	execute_command(t_command *cmd)
 {
-	// int		exit_status;
-	// pid_t	pid;
+	int		exit_status;
+	pid_t	pid;
 
-	// if (exec_builtin(cmd))
-	// pid = ft_fork();
-	// if (pid == 0)
-	// {
-		// if (cmd->file)
-		// 	redirections(cmd);
-			// printf("taha\n");
-			// exit(1);
-		if (ft_strrchr(cmd->argv[0], '/'))
-			is_absolute(cmd);
-		else
-			executable(cmd);
+	pid = ft_fork();
+	if (pid == 0)
+	{
+		redirections(cmd->file);
+		all_cmds(cmd);
 		exit(1);
-	// }
-	// waitpid(pid, &exit_status, 0);
+	}
+	else
+		waitpid(pid, &exit_status, 0);
 }
 
 // void	close_fds(int *fd, int i)
@@ -266,6 +270,7 @@ void	execute_command(t_command *cmd)
 // 	close(fd[0]);
 // 	close(fd[1]);
 // }
+
 
 // void	ft_output(int i, int max)
 // {
@@ -345,8 +350,8 @@ void	execute_command(t_command *cmd)
 
 void    executor(t_command *cmd)
 {
-	if (cmd->next)
-		pipex(cmd);
-	else
+	// if (cmd->next)
+	// 	pipex(cmd);
+	// else
 		execute_command(cmd);
 }

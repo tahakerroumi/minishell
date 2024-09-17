@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/16 16:08:57 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/17 10:47:03 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 char	*ft_strdup(const char *s1);
 char	**ft_split(char const *s, char c);
 int		ft_strlen(const char *str);
-// void	ft_putstr_fd(char *s, int fd);
 void	ft_putstr_fd(char *str, int fd);
 
 // execution

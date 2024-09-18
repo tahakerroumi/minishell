@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:40:03 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/17 15:04:02 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/18 11:56:40 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1384,12 +1384,29 @@ t_command *parser(char *command_line)
 	return (command);
 }
 
+// void read_int(int sig)
+// {
+// 	(void)sig;
+// 	write(1, "\n\nCATCH SIG\n\n", 13);
+// 	rl_callback_handler_install(NULL, NULL);
+// 	rl_cleanup_after_signal();
+// 	//rl_done = 1;
+// }
+
+// int	read_int_wrapper(void)
+// {
+// 	read_int(SIGINT);
+// 	return (0);
+// }
+
 void	minishell_loop()
 {
 	char		*command_line;
 	t_command	*command;
 
 	g_root.end_loop = 0; /////////// delete me
+	// signal(SIGINT, read_int);
+	// rl_signal_event_hook = read_int_wrapper;
 	while (!g_root.end_loop)
 	{
 		printf("\n\n"); ////////////////////// delete me

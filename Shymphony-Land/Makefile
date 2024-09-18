@@ -1,10 +1,11 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g ##-fsanitize=address
 
 EXEC = minishell
 
-SRC = srcs/main.c srcs/split_int_ptr.c srcs/execution/ft_split.c srcs/execution/start.c
+SRC = srcs/main.c srcs/split_int_ptr.c srcs/execution/ft_split.c srcs/execution/start.c srcs/execution/tools.c \
+		srcs/execution/exec_tools.c
 
 OBJ = $(SRC:%.c=%.o)
 

@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/17 18:26:48 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:26:47 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,13 @@ extern t_root	g_root;
 
 // execution
 void    execution(t_command *cmd);
+int		waiting(t_command *cmd);
+void	ft_pipe(int *fd);
+pid_t	ft_fork();
+void	ft_execve(t_command *cmd);
+void	ft_perror(char *msg);
 
-// lib
+// tools
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strdup(const char *s1);
 void	ft_putstr_fd(char *str, int fd);
@@ -144,6 +149,8 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strcpy(char *dest, const char *src);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 char	*ft_strchr(const char *s, int c);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+
 
 // parsing
 char	*ft_getenv(const char *name);

@@ -24,7 +24,7 @@ void	red_fileout(t_file *file)
 			printf("symphony: %s: Is a directory\n", file->name);
 			exit(1);
 		}
-		else if (access(file->name, F_OK) && access(file->name, X_OK))
+		else if (access(file->name, X_OK))
 		{
 			if (file->type == FILE_APPEND)
 				fd = open (file->name, O_CREAT | O_WRONLY | O_APPEND, 0644);
@@ -60,7 +60,14 @@ void	red_filein(t_file *file)
 			printf("symphony: %s: Is a directory\n", file->name);
 			exit(1);
 		}
-		else if (access(file->name, F_OK) && access(file->name, X_OK))
+		else if (access(file->name, X_OK) != 0)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(file->name, 2);
+			ft_putstr_fd(": Permission denied\n", 2);
+			exit(1);
+		}
+		else if (access(file->name, F_OK) != 0)
 		{
 			fd = open(file->name, O_RDONLY);
 			if (fd < 0)
@@ -72,10 +79,13 @@ void	red_filein(t_file *file)
 			}
 			close(fd);
 		}
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(file->name, 2);
-		ft_putstr_fd(": Permission denied\n", 2);
-		exit(1);
+		else
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(file->name, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			exit(1);
+		}
 	}
 }
 
@@ -183,9 +193,31 @@ void	is_command(t_command *cmd)
 	return ;
 }
 
+int is_empty(char *cmd)
+{
+	int i;
+
+	i = 0;
+	if (!cmd || !*cmd)
+		return 1;
+	while (cmd[i])
+	{
+		if (cmd[i] == ' ')
+			i++;
+		else
+			return (0);
+	}
+	return (1);
+}
+
 void	execute(t_command *cmd)
 {
 	// if its a builtin
+	if (is_empty(cmd->argv[0]))
+	{
+		ft_putstr_fd("minishell: : command not found", 2);
+		exit(127);
+	}
 	if (ft_strchr(cmd->argv[0], '/'))
 		is_path(cmd);
 	else
@@ -220,9 +252,9 @@ int	is_builtin(t_command *cmd)
 	return (0);
 }
 
-void    execution(t_command *head)
+int    execution(t_command *head)
 {
-	int			exit_status;
+	int			exit_status = 0;
 	int			fd[2];
 	t_command	*cmd;
 
@@ -255,4 +287,5 @@ void    execution(t_command *head)
 		exit_status = waiting(head);
 	}
 	// else is builtin
+	return (exit_status);
 }

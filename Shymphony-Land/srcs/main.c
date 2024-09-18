@@ -882,7 +882,6 @@ int	get_vars_len(int *mask) /// if the function failed it return -1
 
 int	*reallocate_token_mask(int *mask)
 {
-	int	i;
 	int	len;
 	int	vars_len;
 	int	*new_mask;
@@ -891,7 +890,6 @@ int	*reallocate_token_mask(int *mask)
 	if (vars_len == -1)
 		return (NULL);
 	//printf("\nvars_len = %d\n\n", vars_len); /// test
-	i = 0;
 	len = 0;
 	while (mask[len])
 		len++;

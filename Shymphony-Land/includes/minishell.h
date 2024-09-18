@@ -132,7 +132,7 @@ typedef struct	s_root
 extern t_root	g_root;
 
 // execution
-void    execution(t_command *cmd);
+int    execution(t_command *cmd);
 int		waiting(t_command *cmd);
 void	ft_pipe(int *fd);
 pid_t	ft_fork();
@@ -150,6 +150,7 @@ char	*ft_strcpy(char *dest, const char *src);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 char	*ft_strchr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_isalpha(int c);
 
 
 // parsing

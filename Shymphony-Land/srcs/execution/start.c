@@ -6,11 +6,25 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 12:23:37 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/18 12:24:49 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/18 22:03:29 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+char **free_double(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+	return (NULL);
+}
 
 void	red_fileout(t_file *file)
 {
@@ -21,10 +35,17 @@ void	red_fileout(t_file *file)
 	{
 		if (!stat(file->name, &st) && S_ISDIR(st.st_mode))
 		{
-			printf("symphony: %s: Is a directory\n", file->name);
+			ft_putstr_fd("Is a directory\n", 2);
 			exit(1);
 		}
-		else if (access(file->name, X_OK))
+		else if (access(file->name, X_OK) != 0)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(file->name, 2);
+			ft_putstr_fd(": Permission denied\n", 2);
+			exit(1);
+		}
+		else
 		{
 			if (file->type == FILE_APPEND)
 				fd = open (file->name, O_CREAT | O_WRONLY | O_APPEND, 0644);
@@ -39,35 +60,31 @@ void	red_fileout(t_file *file)
 			}
 			close(fd);
 		}
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(file->name, 2);
-		ft_putstr_fd(": Permission denied\n", 2);
-		exit(1);
 	}
 }
 
 void	red_filein(t_file *file)
 {
 	int fd;
-	struct stat st;
 
 // HANDLE HEREDOC HERE
 	if (file->type == FILE_IN)
 	{
-		// check if the file exists and i have permissions on it
-		if (!stat(file->name, &st) && S_ISDIR(st.st_mode))
+		if (access(file->name, F_OK) != 0)
 		{
-			printf("symphony: %s: Is a directory\n", file->name);
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(file->name, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
 			exit(1);
 		}
-		else if (access(file->name, X_OK) != 0)
+		else if (access(file->name, R_OK) != 0)
 		{
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(file->name, 2);
 			ft_putstr_fd(": Permission denied\n", 2);
 			exit(1);
 		}
-		else if (access(file->name, F_OK) != 0)
+		else
 		{
 			fd = open(file->name, O_RDONLY);
 			if (fd < 0)
@@ -78,13 +95,6 @@ void	red_filein(t_file *file)
 				ft_perror("dup2");
 			}
 			close(fd);
-		}
-		else
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(file->name, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-			exit(1);
 		}
 	}
 }
@@ -125,7 +135,7 @@ void	handle_pipes(int *pipefd)
 		close(pipefd[2]);
 }
 
-void	is_path(t_command *cmd)
+void	exec_path(t_command *cmd)
 {
 	struct stat st;
 
@@ -158,7 +168,7 @@ void	exec(char **path, t_command *cmd)
 {
 	char	*pathname;
 	char	*tmp;
-	int i;
+	int		i;
 
 	i = 0;
 	while (path[i])
@@ -176,61 +186,52 @@ void	exec(char **path, t_command *cmd)
 		i++;
 	}
 	// check if somehow no path was found
+	free_argv(path);
 	ft_putstr_fd("Command not found\n", 2);
-	exit(1);
+	exit(127);
 }
 
-void	is_command(t_command *cmd)
+void	exec_command(t_command *cmd)
 {
-	char *getpath = ft_getenv("PATH");
+	char	*getpath;
+
+	getpath = ft_strdup(ft_getenv("PATH"));
 	if (!getpath)
-		return ; // check all the errors
-	getpath = ft_strdup(getpath);
-	if (!getpath)
-		return ; // check all the errors
+		ft_perror("malloc");
 	char **path = ft_split(getpath, ':'); // fix the split or make a new one if its needed
-	exec(path,cmd);
-	return ;
-}
-
-int is_empty(char *cmd)
-{
-	int i;
-
-	i = 0;
-	if (!cmd || !*cmd)
-		return 1;
-	while (cmd[i])
+	free(getpath);
+	if (!cmd->argv[0][0])
 	{
-		if (cmd[i] == ' ')
-			i++;
-		else
-			return (0);
+		free_argv(path);
+		ft_putstr_fd("Command not found\n", 2);
+		exit(127);
 	}
-	return (1);
+	exec(path, cmd);
 }
 
 void	execute(t_command *cmd)
 {
 	// if its a builtin
-	if (is_empty(cmd->argv[0]))
-	{
-		ft_putstr_fd("minishell: : command not found", 2);
-		exit(127);
-	}
-	if (ft_strchr(cmd->argv[0], '/'))
-		is_path(cmd);
+	if (ft_strchr(cmd->argv[0], '/') || !ft_getenv("PATH"))
+		exec_path(cmd);
 	else
-		is_command(cmd);
-	exit(1);
+		exec_command(cmd);
+}
+
+void	init_signals(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
 
 void	child_routine(t_command *cmd)
 {
-	// if (cmd->next)
+	init_signals();
 	handle_pipes(cmd->pipefd);
 	handle_files(cmd->file);
-	execute(cmd);
+	if(cmd->argv[0])
+		execute(cmd);
+	exit(0);
 }
 
 int	is_builtin(t_command *cmd)
@@ -252,9 +253,8 @@ int	is_builtin(t_command *cmd)
 	return (0);
 }
 
-int    execution(t_command *head)
+void    execution(t_command *head)
 {
-	int			exit_status = 0;
 	int			fd[2];
 	t_command	*cmd;
 
@@ -275,7 +275,7 @@ int    execution(t_command *head)
 			close(cmd->pipefd[1]);
 		cmd = cmd->next;
 	}
-	if (cmd->pipefd[0] || !is_builtin(cmd))
+	if (cmd->pipefd[0] || (cmd->argv[0] && !is_builtin(cmd)))
 	{
 		cmd->pid = ft_fork();
 		if (!cmd->pid)
@@ -284,8 +284,7 @@ int    execution(t_command *head)
             close(cmd->pipefd[0]);
 		if (cmd->pipefd[1])
 			close(cmd->pipefd[1]);
-		exit_status = waiting(head);
+		g_root.exit_status = waiting(head);
 	}
 	// else is builtin
-	return (exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:40:03 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/18 11:56:40 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/18 19:37:19 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -808,6 +808,7 @@ char	*ft_getenv(const char *name)
 							  // when setting or unsetting an env variable.
 	if (ft_strcmp(name, "?"))
 		return (getenv(name));
+	printf("\n\n%d\n\n", g_root.exit_status); ////
 	return ("1337");//(ft_itoa(g_root.exit_status));
 			// normal ft_itoa is bad because it allocate in the heap
 			// i need to declare a char array[5] and use it 
@@ -1448,7 +1449,7 @@ int	main(int ac, char **av)
 		rl_clear_history();
 		printf("exit\n");
 		////////////////////////////////close(3);/////////////////
-		return (0);
+		return (g_root.exit_status);
 	}
 	ft_putstr_fd(RED"minishell accepts no arguments\n"RESET, 2);
 	return (1);

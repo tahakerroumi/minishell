@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/18 12:26:47 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/18 21:57:58 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ typedef struct	s_root
 extern t_root	g_root;
 
 // execution
-int    execution(t_command *cmd);
+void    execution(t_command *cmd);
 int		waiting(t_command *cmd);
 void	ft_pipe(int *fd);
 pid_t	ft_fork();
@@ -151,6 +151,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 char	*ft_strchr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_isalpha(int c);
+void	free_argv(char **av);
 
 
 // parsing

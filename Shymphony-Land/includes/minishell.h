@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/18 21:57:58 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:46:23 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,11 @@ void	ft_pipe(int *fd);
 pid_t	ft_fork();
 void	ft_execve(t_command *cmd);
 void	ft_perror(char *msg);
+void    permission_file_error(t_file *file);
+void    is_dir_error(t_file *file);
+void    no_file_dir(t_file *file);
+// builtins
+void    my_pwd(void);
 
 // tools
 int		ft_strcmp(const char *s1, const char *s2);

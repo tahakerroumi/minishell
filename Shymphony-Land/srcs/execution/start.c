@@ -6,25 +6,11 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 12:23:37 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/18 22:03:29 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:46:56 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-char **free_double(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-	return (NULL);
-}
 
 void	red_fileout(t_file *file)
 {
@@ -34,22 +20,14 @@ void	red_fileout(t_file *file)
 	if (file->type == FILE_OUT  || file->type == FILE_APPEND)
 	{
 		if (!stat(file->name, &st) && S_ISDIR(st.st_mode))
-		{
-			ft_putstr_fd("Is a directory\n", 2);
-			exit(1);
-		}
+			is_dir_error(file);
 		else if (access(file->name, X_OK) != 0)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(file->name, 2);
-			ft_putstr_fd(": Permission denied\n", 2);
-			exit(1);
-		}
+			permission_file_error(file);
 		else
 		{
 			if (file->type == FILE_APPEND)
 				fd = open (file->name, O_CREAT | O_WRONLY | O_APPEND, 0644);
-			else // if (file->type == FILE_OUT)
+			else
 				fd = open (file->name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
 				ft_perror("open");
@@ -71,19 +49,9 @@ void	red_filein(t_file *file)
 	if (file->type == FILE_IN)
 	{
 		if (access(file->name, F_OK) != 0)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(file->name, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-			exit(1);
-		}
+			no_file_dir(file);
 		else if (access(file->name, R_OK) != 0)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(file->name, 2);
-			ft_putstr_fd(": Permission denied\n", 2);
-			exit(1);
-		}
+			permission_file_error(file);
 		else
 		{
 			fd = open(file->name, O_RDONLY);
@@ -139,12 +107,12 @@ void	exec_path(t_command *cmd)
 {
 	struct stat st;
 
-	if (access(cmd->argv[0], F_OK) != 0)// F_OK  Used to check for the existence of a file.
+	if (access(cmd->argv[0], F_OK) != 0)
 	{
 		ft_putstr_fd("No such file or directory\n", 2);
 		exit(127);
 	} 
-    else if (access(cmd->argv[0], X_OK) == 0) // X_OK flag: Used to check for execute permission bit.
+    else if (access(cmd->argv[0], X_OK) == 0)
 	{
         if (stat(cmd->argv[0], &st) == 0)
 		{
@@ -185,7 +153,6 @@ void	exec(char **path, t_command *cmd)
 		free(pathname);
 		i++;
 	}
-	// check if somehow no path was found
 	free_argv(path);
 	ft_putstr_fd("Command not found\n", 2);
 	exit(127);
@@ -253,12 +220,27 @@ int	is_builtin(t_command *cmd)
 	return (0);
 }
 
-void    execution(t_command *head)
+void	run_builtin(t_command *cmd)
 {
-	int			fd[2];
-	t_command	*cmd;
+	// if (ft_strcmp(cmd->argv[0], "cd") == 0)
+    //     return (1);
+    // else if (ft_strcmp(cmd->argv[0], "echo") == 0)
+    //     return (1);
+    if (ft_strcmp(cmd->argv[0], "pwd") == 0)
+        my_pwd();
+    // else if (ft_strcmp(cmd->argv[0], "export") == 0)
+    //     return (1);
+	// else if (ft_strcmp(cmd->argv[0], "unset") == 0)
+    //     return (1);
+    // else if (ft_strcmp(cmd->argv[0], "env") == 0)
+    //     return (1);
+	// else if (ft_strcmp(cmd->argv[0], "exit") == 0)
+    //     return (1);
+	// return (0);
+}
 
-	cmd = head;
+void	pipex(t_command *cmd, int *fd)
+{
 	while (cmd->next)
 	{
 		ft_pipe(fd);
@@ -275,8 +257,10 @@ void    execution(t_command *head)
 			close(cmd->pipefd[1]);
 		cmd = cmd->next;
 	}
-	if (cmd->pipefd[0] || (cmd->argv[0] && !is_builtin(cmd)))
-	{
+}
+
+void	executing(t_command *cmd, t_command *head)
+{
 		cmd->pid = ft_fork();
 		if (!cmd->pid)
 			child_routine(cmd);
@@ -285,6 +269,44 @@ void    execution(t_command *head)
 		if (cmd->pipefd[1])
 			close(cmd->pipefd[1]);
 		g_root.exit_status = waiting(head);
-	}
-	// else is builtin
+}
+
+void    execution(t_command *head)
+{
+	int			fd[2];
+	t_command	*cmd;
+
+	cmd = head;
+	if (cmd->next)
+		pipex(cmd, fd);
+	// while (cmd->next)
+	// {
+	// 	ft_pipe(fd);
+	// 	cmd->pipefd[1] = fd[1];
+	// 	cmd->pipefd[2] = fd[0];
+	// 	cmd->next->pipefd[0] = fd[0];
+
+	// 	cmd->pid = ft_fork();
+	// 	if (!cmd->pid)
+	// 		child_routine(cmd);
+	// 	if (cmd->pipefd[0])
+	// 		close(cmd->pipefd[0]);
+    //     if (cmd->pipefd[1])
+	// 		close(cmd->pipefd[1]);
+	// 	cmd = cmd->next;
+	// }
+	if (cmd->pipefd[0] || (cmd->argv[0] && !is_builtin(cmd)))
+		executing(cmd, head);
+	// {
+	// 	cmd->pid = ft_fork();
+	// 	if (!cmd->pid)
+	// 		child_routine(cmd);
+	// 	if (cmd->pipefd[0])
+    //         close(cmd->pipefd[0]);
+	// 	if (cmd->pipefd[1])
+	// 		close(cmd->pipefd[1]);
+	// 	g_root.exit_status = waiting(head);
+	// }
+	else
+		run_builtin(cmd);
 }

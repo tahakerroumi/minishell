@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 12:23:37 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/19 14:54:35 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:18:21 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,34 +39,29 @@ void	run_builtin(t_command *cmd)
 
 void	pipex(t_command *cmd, int *fd)
 {
-	while (cmd->next)
-	{
-		ft_pipe(fd);
-		cmd->pipefd[1] = fd[1];
-		cmd->pipefd[2] = fd[0];
-		cmd->next->pipefd[0] = fd[0];
+	ft_pipe(fd);
+	cmd->pipefd[1] = fd[1];
+	cmd->pipefd[2] = fd[0];
+	cmd->next->pipefd[0] = fd[0];
 
-		cmd->pid = ft_fork();
-		if (!cmd->pid)
-			child_routine(cmd);
-		if (cmd->pipefd[0])
-			close(cmd->pipefd[0]);
-        if (cmd->pipefd[1])
-			close(cmd->pipefd[1]);
-		cmd = cmd->next;
-	}
+	cmd->pid = ft_fork();
+	if (!cmd->pid)
+		child_routine(cmd);
+	if (cmd->pipefd[0])
+		close(cmd->pipefd[0]);
+    if (cmd->pipefd[1])
+		close(cmd->pipefd[1]);
 }
 
-void	executing(t_command *cmd, t_command *head)
+void	executing(t_command *cmd)
 {
-		cmd->pid = ft_fork();
-		if (!cmd->pid)
-			child_routine(cmd);
-		if (cmd->pipefd[0])
-            close(cmd->pipefd[0]);
-		if (cmd->pipefd[1])
-			close(cmd->pipefd[1]);
-		g_root.exit_status = waiting(head);
+	cmd->pid = ft_fork();
+	if (!cmd->pid)
+		child_routine(cmd);
+	if (cmd->pipefd[0])
+        close(cmd->pipefd[0]);
+	if (cmd->pipefd[1])
+		close(cmd->pipefd[1]);
 }
 
 void    execution(t_command *head)
@@ -75,10 +70,16 @@ void    execution(t_command *head)
 	t_command	*cmd;
 
 	cmd = head;
-	if (cmd->next)
+	while (cmd->next)
+	{
 		pipex(cmd, fd);
+		cmd = cmd->next;
+	}
 	if (cmd->pipefd[0] || (cmd->argv[0] && !is_builtin(cmd)))
-		executing(cmd, head);
+	{
+		executing(cmd);
+		g_root.exit_status = waiting(head);
+	}
 	else
 		run_builtin(cmd);
 }

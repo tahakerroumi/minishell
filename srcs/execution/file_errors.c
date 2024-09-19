@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:37:11 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/19 14:56:15 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:20:36 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ void	ambigious_error(t_file *file)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(file->name, 2);
-	ft_putstr_fd("ambiguous redirect\n", 2);
+	ft_putstr_fd(": ambiguous redirect\n", 2);
 	exit(1);
 }

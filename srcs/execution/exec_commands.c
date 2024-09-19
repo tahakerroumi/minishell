@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:54:38 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/19 15:11:40 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:25:12 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	exec(char **path, t_command *cmd)
 		free(pathname);
 		i++;
 	}
-	free_argv(path);
+	free_string_array(path);
     not_found(cmd);
 }
 
@@ -68,7 +68,7 @@ void	exec_command(t_command *cmd)
 	free(getpath);
 	if (!cmd->argv[0][0])
 	{
-		free_argv(path);
+		free_string_array(path);
         not_found(cmd);
 	}
 	exec(path, cmd);

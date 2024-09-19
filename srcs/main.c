@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:40:03 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/18 19:37:19 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:23:49 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1197,7 +1197,7 @@ void	print_commands(t_command *command)
 	}
 }
 
-void	free_argv(char **av)
+void	free_string_array(char **av)
 {
 	int	i;
 
@@ -1236,7 +1236,7 @@ void	free_commands(t_command *head, int f_flag)
 		}
 		if (f_flag & F_ARGV)
 		{
-			free_argv(command->argv);
+			free_string_array(command->argv);
 			command->argv = NULL;
 		}
 		if (f_flag & F_FILE)

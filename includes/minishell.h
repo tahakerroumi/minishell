@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/19 15:24:58 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:23:13 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ extern t_root	g_root;
 
 // execution
 void    execution(t_command *cmd);
-void	executing(t_command *cmd, t_command *head);
+void	executing(t_command *cmd);
 void	pipex(t_command *cmd, int *fd);
 void	run_builtin(t_command *cmd);
 int		is_builtin(t_command *cmd);
@@ -175,7 +175,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 char	*ft_strchr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_isalpha(int c);
-void	free_argv(char **av);
+void	free_string_array(char **av);
 
 
 // parsing

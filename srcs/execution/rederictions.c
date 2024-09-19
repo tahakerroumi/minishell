@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:53:34 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/19 14:53:48 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:42:29 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	red_fileout(t_file *file)
 	{
 		if (!stat(file->name, &st) && S_ISDIR(st.st_mode))
 			is_dir_error(file);
-		else if (access(file->name, X_OK) != 0)
-			permission_file_error(file);
+        if ((!access(file->name, F_OK)) && (access(file->name, X_OK) == -1))
+            permission_file_error(file);
 		else
 		{
 			if (file->type == FILE_APPEND)

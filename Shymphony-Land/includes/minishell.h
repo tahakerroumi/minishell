@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/19 14:46:23 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:24:58 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,10 @@ extern t_root	g_root;
 
 // execution
 void    execution(t_command *cmd);
+void	executing(t_command *cmd, t_command *head);
+void	pipex(t_command *cmd, int *fd);
+void	run_builtin(t_command *cmd);
+int		is_builtin(t_command *cmd);
 int		waiting(t_command *cmd);
 void	ft_pipe(int *fd);
 pid_t	ft_fork();
@@ -141,6 +145,21 @@ void	ft_perror(char *msg);
 void    permission_file_error(t_file *file);
 void    is_dir_error(t_file *file);
 void    no_file_dir(t_file *file);
+void	ambigious_error(t_file *file);
+void    no_such_f_d(t_command *cmd);
+void    is_dir_cmd(t_command *cmd);
+void    no_permission(t_command *cmd);
+void    not_found(t_command *cmd);
+void	execute(t_command *cmd);
+void	handle_files(t_file *head);
+void	handle_pipes(int *pipefd);
+void	init_signals(void);
+void	child_routine(t_command *cmd);
+void	exec_path(t_command *cmd);
+void	exec(char **path, t_command *cmd);
+void	exec_command(t_command *cmd);
+void	red_filein(t_file *file);
+void	red_fileout(t_file *file);
 // builtins
 void    my_pwd(void);
 

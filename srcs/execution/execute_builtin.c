@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/19 11:08:37 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/20 11:56:06 by tkerroum         ###   ########.fr       */
+/*   Created: 2024/09/20 14:14:11 by tkerroum          #+#    #+#             */
+/*   Updated: 2024/09/20 16:05:40 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-int    builtin_pwd(void)
+int execute_builtin(t_command *cmd)
 {
-    char    buffer[4096];
-
-    if (getcwd(buffer, sizeof(buffer)) != NULL)
-    {
-        ft_putstr_fd(buffer, 1);
-        ft_putstr_fd("\n", 1);
-        return (0);
-    }
-    else
-    {
-        ft_perror("getcwd");
-        return (1);
-    }
+	if (ft_strcmp(cmd->argv[0], "pwd") == 0)
+		return (builtin_pwd());
+	else if (ft_strcmp(cmd->argv[0], "env") == 0)
+		return (builtin_env());
+	else if (ft_strcmp(cmd->argv[0], "echo") == 0)
+		return (builtin_echo(cmd));
+	return (0);
 }

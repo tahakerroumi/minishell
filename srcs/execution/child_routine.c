@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:50:08 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/19 14:57:19 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/20 12:27:00 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	execute(t_command *cmd)
 {
-	// if its a builtin
+	if (is_builtin(cmd))
+		exit(execute_builtin(cmd));
 	if (ft_strchr(cmd->argv[0], '/') || !ft_getenv("PATH"))
 		exec_path(cmd);
 	else

@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/19 17:23:13 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/20 16:03:19 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,12 +134,9 @@ extern t_root	g_root;
 // execution
 void    execution(t_command *cmd);
 void	executing(t_command *cmd);
-void	pipex(t_command *cmd, int *fd);
-void	run_builtin(t_command *cmd);
+void	many_commands(t_command *cmd, int *fd);
 int		is_builtin(t_command *cmd);
 int		waiting(t_command *cmd);
-void	ft_pipe(int *fd);
-pid_t	ft_fork();
 void	ft_execve(t_command *cmd);
 void	ft_perror(char *msg);
 void    permission_file_error(t_file *file);
@@ -161,7 +158,10 @@ void	exec_command(t_command *cmd);
 void	red_filein(t_file *file);
 void	red_fileout(t_file *file);
 // builtins
-void    my_pwd(void);
+int		execute_builtin(t_command *cmd);
+int		builtin_pwd(void);
+int		builtin_env(void);
+int		builtin_echo(t_command *cmd);
 
 // tools
 int		ft_strcmp(const char *s1, const char *s2);

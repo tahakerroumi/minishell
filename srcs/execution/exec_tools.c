@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:21:41 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/18 18:50:26 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/20 14:33:23 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,6 @@ void	ft_execve(t_command *cmd)
 	}
 }
 
-pid_t ft_fork()
-{
-    pid_t pid = fork();
-    if (pid < 0)
-        ft_perror("fork");
-    return (pid);
-}
-
-void ft_pipe(int *fd)
-{
-    if (pipe(fd) == -1)
-        ft_perror("pipe");
-}
 int	waiting(t_command *cmd)
 {
 	int	exit_status;

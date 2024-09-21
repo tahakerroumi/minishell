@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/20 16:03:19 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/21 12:49:29 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ int		execute_builtin(t_command *cmd);
 int		builtin_pwd(void);
 int		builtin_env(void);
 int		builtin_echo(t_command *cmd);
+int		builtin_exit(t_command *cmd);
 
 // tools
 int		ft_strcmp(const char *s1, const char *s2);
@@ -176,6 +177,8 @@ char	*ft_strchr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_isalpha(int c);
 void	free_string_array(char **av);
+int		ft_isdigit(int c);
+char	*ft_strtrim(char  *s1, char  *set);
 
 
 // parsing

@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:50:08 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/20 12:27:00 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/20 20:15:15 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	handle_pipes(int *pipefd)
 
 void	init_signals(void)
 {
-	signal(SIGINT, SIG_DFL);
+	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_DFL);
 }
 

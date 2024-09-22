@@ -4,6 +4,8 @@ CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
 EXEC = minishell
 
+INCLUDES = includes/
+
 SRC = 	srcs/main.c srcs/split_int_ptr.c srcs/execution/ft_split.c srcs/execution/start.c srcs/execution/tools.c \
 		srcs/execution/exec_tools.c srcs/execution/builtins/pwd.c srcs/execution/file_errors.c srcs/execution/builtins/exit.c \
 		srcs/execution/rederictions.c srcs/execution/exec_errors.c srcs/execution/builtins/env.c srcs/execution/builtins/echo.c \
@@ -30,3 +32,4 @@ re: fclean all
 .SECONDARY: $(OBJ)
 
 .PHONY: all clean fclean re
+

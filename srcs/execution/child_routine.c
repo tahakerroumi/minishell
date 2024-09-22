@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:50:08 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/20 20:15:15 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:43:59 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,3 +70,4 @@ void	child_routine(t_command *cmd)
 		execute(cmd);
 	exit(0);
 }
+

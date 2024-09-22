@@ -6,13 +6,13 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:53:34 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/20 14:11:10 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 13:26:51 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	red_fileout(t_file *file)
+void	rederiction_out(t_file *file)
 {
 	struct	stat st;
 
@@ -45,7 +45,7 @@ static	void	norm_filein(t_file *file)
 		permission_file_error(file);
 }
 
-void	red_filein(t_file *file)
+void	rederiction_in(t_file *file)
 {
 	if (file->type == FILE_IN)
 	{

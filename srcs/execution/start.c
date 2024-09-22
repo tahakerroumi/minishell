@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 12:23:37 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/20 23:44:43 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:06:19 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int	is_builtin(t_command *cmd)
 	return (0);
 }
 
-void	many_commands(t_command *cmd, int *fd)
+void	create_pipes(t_command *cmd, int *fd)
 {
 	if (pipe(fd) == -1)
         ft_perror("pipe");
+		//cleanup : close herdocs and free command list
 	cmd->pipefd[1] = fd[1];
 	cmd->pipefd[2] = fd[0];
 	cmd->next->pipefd[0] = fd[0];
-	executing(cmd);
 }
 
 void	executing(t_command *cmd)
@@ -48,6 +48,7 @@ void	executing(t_command *cmd)
 	cmd->pid = fork();
 	if (cmd->pid < 0)
 		ft_perror("fork");
+		//cleanup : close herdocs and free command list
 	if (!cmd->pid)
 		child_routine(cmd);
 	if (cmd->pipefd[0])
@@ -64,7 +65,8 @@ void    execution(t_command *head)
 	cmd = head;
 	while (cmd->next)
 	{
-		many_commands(cmd, fd);
+		create_pipes(cmd, fd);
+		executing(cmd);
 		cmd = cmd->next;
 	}
 	if (cmd->pipefd[0] || (cmd->argv[0] && !is_builtin(cmd)))
@@ -74,10 +76,10 @@ void    execution(t_command *head)
 	}
 	else
 	{
-		// save_stdio();
+		// save_stdio(); if (FAILURE) => perror then //cleanup : close herdocs and free command list
 		// handle_files(cmd->file);
 		g_root.exit_status = execute_builtin(cmd);
-		// reset_stdio();
+		// reset_stdio(); if (FAILURE) => perror then //cleanup : close herdocs and free command list
 	}
 	// close heredocs using cmd_iter and file_iter
 }

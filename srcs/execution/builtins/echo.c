@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:41:24 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/21 14:19:27 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:44:10 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,3 +53,4 @@ int builtin_echo(t_command *cmd)
 		ft_putstr_fd("\n", 1);
 	return (0);
 }
+

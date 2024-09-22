@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/21 12:49:29 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:44:18 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,8 +155,8 @@ void	child_routine(t_command *cmd);
 void	exec_path(t_command *cmd);
 void	exec(char **path, t_command *cmd);
 void	exec_command(t_command *cmd);
-void	red_filein(t_file *file);
-void	red_fileout(t_file *file);
+void	rederiction_in(t_file *file);
+void	rederiction_out(t_file *file);
 // builtins
 int		execute_builtin(t_command *cmd);
 int		builtin_pwd(void);
@@ -179,7 +179,6 @@ int		ft_isalpha(int c);
 void	free_string_array(char **av);
 int		ft_isdigit(int c);
 char	*ft_strtrim(char  *s1, char  *set);
-
 
 // parsing
 char	*ft_getenv(const char *name);

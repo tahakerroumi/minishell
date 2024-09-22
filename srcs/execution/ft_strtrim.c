@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:30:43 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/21 12:50:19 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:43:12 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,3 +73,5 @@ char	*ft_strtrim(char  *s1, char  *set)
 	str = ft_substr(s1, i, j - i);
 	return (str);
 }
+
+

@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 16:57:32 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/17 14:33:45 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:43:24 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,3 +100,4 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	return (start_spliting(res, s, c));
 }
+

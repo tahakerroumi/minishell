@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:01:18 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/19 16:20:26 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:43:47 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,3 +43,4 @@ void    not_found(t_command *cmd)
 	ft_putstr_fd(": Command not found\n", 2);
 	exit(127);
 }
+

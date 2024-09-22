@@ -6,17 +6,17 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 21:39:02 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/21 20:44:36 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 13:22:44 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-long	ft_converter(const char *nptr)
+int	ft_converter(const char *nptr)
 {
-	long	i;
-	int		signe;
-	long	res;
+	int	i;
+	int	signe;
+	int	res;
 
 	if (!nptr)
         return (0);
@@ -57,18 +57,18 @@ int	word(char *s)
 	return (0);
 }
 
-int check_max(int		long num , char *s)
-{
-	char *p;
+// int check_max(int		long num , char *s)
+// {
+// 	char *p;
 	
-	p = ft_strtrim(s, " \t\n");
-	if (ft_strlen(p) > 20)
-		return (free(p), 1);
-	if ((num < 0 && p[0] != '-') || (num > 0 && p[0] == '-'))
-		return (free(p), 1);
-	free(p);
-	return (0);
-}
+// 	p = ft_strtrim(s, " \t\n");
+// 	if (ft_strlen(p) > 20)
+// 		return (free(p), 1);
+// 	if ((num < 0 && p[0] != '-') || (num > 0 && p[0] == '-'))
+// 		return (free(p), 1);
+// 	free(p);
+// 	return (0);
+// }
 
 int builtin_exit(t_command *cmd)
 {
@@ -80,7 +80,7 @@ int builtin_exit(t_command *cmd)
         exit(g_root.exit_status);
 	}
 	num = ft_converter(cmd->argv[1]);
-	if (check_max(num,cmd->argv[1]) || word(cmd->argv[1])) 
+	if (word(cmd->argv[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(cmd->argv[1], 2);
@@ -90,9 +90,10 @@ int builtin_exit(t_command *cmd)
 	else if (cmd->argv[2])
 	{
 		ft_putstr_fd("minishell: exit:", 2);
-		ft_putstr_fd(cmd->argv[1], 2);
+		// ft_putstr_fd(cmd->argv[1], 2);
 		ft_putstr_fd(" too many arguments\n", 2);
-		exit(1);
+		g_root.exit_status = 1;
+		return (1);
 	}
 	exit((unsigned char)num);
 }

@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:40:03 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/20 21:06:22 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:43:04 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1454,3 +1454,4 @@ int	main(int ac, char **av)
 	ft_putstr_fd(RED"minishell accepts no arguments\n"RESET, 2);
 	return (1);
 }
+

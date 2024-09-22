@@ -6,20 +6,31 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:53:34 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/22 13:26:51 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 18:07:48 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	rederiction_out(t_file *file)
+static	int	norm_fileout(t_file *file, int child)
 {
 	struct	stat st;
 
 	if (!stat(file->name, &st) && S_ISDIR(st.st_mode))
-		is_dir_error(file);
+	{
+		if (is_dir_error(file))
+			return (1);
+	}
     if ((!access(file->name, F_OK)) && (access(file->name, W_OK) == -1))
-        permission_file_error(file);
+        if (permission_file_error(file))
+			return (1);
+	return (0);
+}
+
+int	rederiction_out(t_file *file, bool child)
+{
+	if (norm_fileout(file, child))
+		return (1);
 	else
 	{
 		if (file->type == FILE_APPEND)
@@ -27,36 +38,44 @@ void	rederiction_out(t_file *file)
 		else
 			file->fd = open (file->name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (file->fd < 0)
-			ft_perror("open");
+			return (ft_perror("open", child));
 		if (dup2(file->fd, STDOUT_FILENO) < 0)
 		{
 			close(file->fd);
-			ft_perror("dup2");
+			return (ft_perror("dup2", child));
 		}
 		close(file->fd);
 	}
+	return (0);
 }
 
-static	void	norm_filein(t_file *file)
+static	int	norm_filein(t_file *file, int child)
 {
 	if (access(file->name, F_OK) != 0)
-		no_file_dir(file);
+	{
+		if (no_file_dir(file, child))
+			return (1);
+	}
 	else if (access(file->name, R_OK) != 0)
-		permission_file_error(file);
+	{
+		if (permission_file_error(file, child))
+			return (1);	
+	}
 }
 
-void	rederiction_in(t_file *file)
+int	rederiction_in(t_file *file, int child)
 {
 	if (file->type == FILE_IN)
 	{
-		norm_filein(file);
+		if (norm_filein(file, child))
+			return (1);
 		file->fd = open(file->name, O_RDONLY);
 		if (file->fd < 0)
-			ft_perror("open");
+			return (ft_perror("open", child));
 		if (dup2(file->fd, STDIN_FILENO) < 0)
 		{
 			close(file->fd);
-			ft_perror("dup2");
+			return (ft_perror("dup2", child));
 		}
 		close(file->fd);
 	}
@@ -65,8 +84,9 @@ void	rederiction_in(t_file *file)
 		if (dup2(file->fd, STDIN_FILENO) < 0)
 		{
 			close(file->fd);
-			ft_perror("dup2");
+			return (ft_perror("dup2", child));
 		}
 		close(file->fd);
 	}
+	return (0);
 }

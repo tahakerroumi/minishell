@@ -6,30 +6,33 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:21:41 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/22 13:48:08 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 18:10:15 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_perror(char *msg)
+int	ft_perror(char *msg, int child)
 {
     perror(msg);
-    exit(EXIT_FAILURE);
+	if (child)
+		exit(1);
+    return (1);
 }
 
-void	ft_execve(t_command *cmd)
+int	ft_execve(t_command *cmd)
 {
 	if (cmd->path)
 	{
 		if (execve(cmd->path, cmd->argv, g_root.env) == -1)
-			ft_perror("execve");
+			return (ft_perror("execve", 1));
 	}
 	else
 	{
 		if (execve(cmd->argv[0], cmd->argv, g_root.env) == -1)
-			ft_perror("execve");
+			return (ft_perror("execve", 1));
 	}
+	return (0);
 }
 
 int	waiting(t_command *cmd)

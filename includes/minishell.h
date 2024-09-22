@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/22 14:44:18 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 16:43:15 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/stat.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <stdbool.h>
 
 # define BOLD		"\x1b[1m"
 # define GREEN BOLD	"\x1b[32m"
@@ -132,31 +133,12 @@ typedef struct	s_root
 extern t_root	g_root;
 
 // execution
-void    execution(t_command *cmd);
-void	executing(t_command *cmd);
-void	many_commands(t_command *cmd, int *fd);
-int		is_builtin(t_command *cmd);
-int		waiting(t_command *cmd);
-void	ft_execve(t_command *cmd);
-void	ft_perror(char *msg);
-void    permission_file_error(t_file *file);
-void    is_dir_error(t_file *file);
-void    no_file_dir(t_file *file);
-void	ambigious_error(t_file *file);
-void    no_such_f_d(t_command *cmd);
-void    is_dir_cmd(t_command *cmd);
-void    no_permission(t_command *cmd);
-void    not_found(t_command *cmd);
-void	execute(t_command *cmd);
-void	handle_files(t_file *head);
-void	handle_pipes(int *pipefd);
-void	init_signals(void);
-void	child_routine(t_command *cmd);
-void	exec_path(t_command *cmd);
-void	exec(char **path, t_command *cmd);
-void	exec_command(t_command *cmd);
-void	rederiction_in(t_file *file);
-void	rederiction_out(t_file *file);
+int	execution(t_command *head);
+int	start_executing(t_command *cmd);
+int	create_pipes(t_command *cmd, int *fd);
+int	is_builtin(t_command *cmd);
+
+
 // builtins
 int		execute_builtin(t_command *cmd);
 int		builtin_pwd(void);

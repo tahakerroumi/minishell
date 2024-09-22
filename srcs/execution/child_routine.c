@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:50:08 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/22 14:43:59 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 16:54:46 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	execute(t_command *cmd)
 		exec_command(cmd);
 }
 
-void	handle_files(t_file *head)
+int	handle_files(t_file *head, int child)
 {
 	t_file *file;
 
@@ -30,13 +30,23 @@ void	handle_files(t_file *head)
 	while (file)
 	{
 		if (file->type == FILE_AMBIGUOUS)
-            ambigious_error(file);
+		{
+            if (ambigious_error(file, child))
+				return (1);
+		}
 		if (file->type == FILE_IN || file->type == FILE_HEREDOC)
-			red_filein(file);
+		{
+			if (rederiction_in(file, child))
+				return (1);
+		}
 		if (file->type == FILE_OUT || file->type == FILE_APPEND)
-			red_fileout(file);
+		{
+			if (rederiction_out(file, child))
+				return (1);
+		}
 		file = file->next;
 	}
+	return (0);
 }
 
 void	handle_pipes(int *pipefd)
@@ -63,9 +73,10 @@ void	init_signals(void)
 
 void	child_routine(t_command *cmd)
 {
-	init_signals();
-	handle_pipes(cmd->pipefd);
-	handle_files(cmd->file);
+	init_signals(); // void
+	handle_pipes(cmd->pipefd); //void
+	if (handle_files(cmd->file, 1))
+		return (1);
 	if(cmd->argv[0])
 		execute(cmd);
 	exit(0);

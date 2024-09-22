@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:40:03 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/22 14:43:04 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/22 16:19:16 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1428,8 +1428,12 @@ void	minishell_loop()
 		/////////////////////////////////////////////////////////
 		print_commands(command); ///////////////////
 
-		execution(command);
-		
+		if (execution(command))
+		{
+			// cleanup all of it
+			continue;
+		}
+
 		free_commands(command, F_PATH | F_ARGV | F_FILE | F_COMMAND);//
 		/////////////////////////////////////////////////////////
 	}

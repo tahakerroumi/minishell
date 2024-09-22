@@ -6,13 +6,13 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 21:39:02 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/21 17:43:44 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:44:36 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-long	ft_atol(const char *nptr)
+long	ft_converter(const char *nptr)
 {
 	long	i;
 	int		signe;
@@ -57,7 +57,7 @@ int	word(char *s)
 	return (0);
 }
 
-int check_max(long long num , char *s)
+int check_max(int		long num , char *s)
 {
 	char *p;
 	
@@ -79,7 +79,7 @@ int builtin_exit(t_command *cmd)
 	{
         exit(g_root.exit_status);
 	}
-	num = ft_atos(cmd->argv[1]);
+	num = ft_converter(cmd->argv[1]);
 	if (check_max(num,cmd->argv[1]) || word(cmd->argv[1])) 
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
@@ -94,5 +94,5 @@ int builtin_exit(t_command *cmd)
 		ft_putstr_fd(" too many arguments\n", 2);
 		exit(1);
 	}
-	exit(num);
+	exit((unsigned char)num);
 }

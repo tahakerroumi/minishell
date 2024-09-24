@@ -6,11 +6,11 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:54:38 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/23 12:09:13 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/24 20:51:15 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	exec_path(t_command *cmd)
 {

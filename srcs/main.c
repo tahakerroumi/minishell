@@ -6,11 +6,11 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:40:03 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/23 17:53:39 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/24 20:52:47 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 void	*ft_calloc(size_t count, size_t size);
 

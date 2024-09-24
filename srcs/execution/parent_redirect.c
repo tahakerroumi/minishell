@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   parent_redirect.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/19 11:08:37 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/24 21:03:43 by tkerroum         ###   ########.fr       */
+/*   Created: 2024/09/24 20:50:56 by tkerroum          #+#    #+#             */
+/*   Updated: 2024/09/24 21:00:11 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int    builtin_pwd(void)
+int save_stdio(t_file *file)
 {
-    char    buffer[4096];
+    int in;
+    int out;
 
-    if (getcwd(buffer, sizeof(buffer)) != NULL)
-    {
-        ft_putstr_fd(buffer, 1);
-        ft_putstr_fd("\n", 1);
-        return (0);
-    }
-    else
-        return (ft_perror("getcwd", false));
+    out = dup(STDOUT_FILENO);
+    in = dup(STDIN_FILENO);
 }
-

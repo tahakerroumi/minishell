@@ -6,11 +6,11 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 16:57:32 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/22 14:43:24 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/24 20:51:51 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 static char	**free_if_error(char **ptr, int index)
 {

@@ -6,11 +6,11 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 21:39:02 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/22 13:22:44 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/24 21:03:38 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minishell.h"
+#include "minishell.h"
 
 int	ft_converter(const char *nptr)
 {

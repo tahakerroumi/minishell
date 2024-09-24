@@ -6,11 +6,11 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:30:43 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/22 14:43:12 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/24 20:51:58 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 static int	checkchar(char a, char  *b)
 {

@@ -6,11 +6,11 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:15:32 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/23 17:32:56 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/24 20:52:38 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {

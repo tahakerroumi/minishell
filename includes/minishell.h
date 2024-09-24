@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/23 17:42:28 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/24 20:03:10 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int		is_builtin(t_command *cmd);
 void	child_routine(t_command *cmd);
 void	init_signals(void);
 void	handle_pipes(int *pipefd);
-int		handle_files(t_file *head, int child);
+void	handle_files(t_file *head);
 void	execute(t_command *cmd);
 void	exec_command(t_command *cmd);
 void	exec(char **path, t_command *cmd);
@@ -153,13 +153,13 @@ int		ft_perror(char *msg, int child);
 int		ft_execve(t_command *cmd);
 int		waiting(t_command *cmd);
 int		execute_builtin(t_command *cmd);
-int		permission_file_error(t_file *file, int child);
-int		is_dir_error(t_file *file, int child);
-int		no_file_dir(t_file *file, int child);
-int		ambigious_error(t_file *file, int child);
+void	permission_file_error(t_file *file);
+void	is_dir_error(t_file *file);
+void	no_file_dir(t_file *file);
+void	ambigious_error(t_file *file);
 char	**ft_split(char const *s, char c);
-int		rederiction_in(t_file *file, int child);
-int		rederiction_out(t_file *file, bool child);
+void	rederiction_in(t_file *file);
+void	rederiction_out(t_file *file);
 
 
 // builtins

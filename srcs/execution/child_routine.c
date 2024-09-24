@@ -6,11 +6,11 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:50:08 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/23 12:10:00 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/24 20:51:07 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	execute(t_command *cmd)
 {
@@ -22,7 +22,7 @@ void	execute(t_command *cmd)
 		exec_command(cmd);
 }
 
-int	handle_files(t_file *head, int child)
+void	handle_files(t_file *head)
 {
 	t_file *file;
 
@@ -30,23 +30,13 @@ int	handle_files(t_file *head, int child)
 	while (file)
 	{
 		if (file->type == FILE_AMBIGUOUS)
-		{
-            if (ambigious_error(file, child))
-				return (1);
-		}
+            ambigious_error(file);
 		if (file->type == FILE_IN || file->type == FILE_HEREDOC)
-		{
-			if (rederiction_in(file, child))
-				return (1);
-		}
+			rederiction_in(file);
 		if (file->type == FILE_OUT || file->type == FILE_APPEND)
-		{
-			if (rederiction_out(file, child))
-				return (1);
-		}
+			rederiction_out(file);
 		file = file->next;
 	}
-	return (0);
 }
 
 void	handle_pipes(int *pipefd)
@@ -75,9 +65,8 @@ void	child_routine(t_command *cmd)
 {
 	init_signals(); // void
 	handle_pipes(cmd->pipefd); //void
-	handle_files(cmd->file, 1);
+	handle_files(cmd->file);
 	if(cmd->argv[0])
 		execute(cmd);
 	exit(0);
 }
-

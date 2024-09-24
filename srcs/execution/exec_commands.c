@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:54:38 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/22 18:11:03 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/23 12:09:13 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	exec_command(t_command *cmd)
 
 	getpath = ft_strdup(ft_getenv("PATH"));
 	if (!getpath)
-		return (ft_perror("malloc", 1));
+		ft_perror("malloc", 1);
 	char **path = ft_split(getpath, ':'); // fix the split or make a new one if its needed
 	free(getpath);
 	if (!cmd->argv[0][0])

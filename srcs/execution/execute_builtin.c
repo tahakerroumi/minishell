@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 14:14:11 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/22 14:43:44 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:43:00 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,7 @@ int execute_builtin(t_command *cmd)
 		return (builtin_echo(cmd));
 	else if (ft_strcmp(cmd->argv[0], "exit") == 0)
 		return (builtin_exit(cmd));
+	else if (ft_strcmp(cmd->argv[0], "env") == 0)
+		return (builtin_env());
 	return (0);
 }

@@ -6,11 +6,11 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:21:41 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/22 18:10:15 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/23 12:05:54 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../includes/minishell.h"
 
 int	ft_perror(char *msg, int child)
 {

@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/22 20:45:51 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:42:28 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,14 +133,14 @@ typedef struct	s_root
 extern t_root	g_root;
 
 // execution
-int	execution(t_command *head);
-int	start_executing(t_command *cmd);
-int	create_pipes(t_command *cmd, int *fd);
-int	is_builtin(t_command *cmd);
+int		execution(t_command *head);
+int		start_executing(t_command *cmd);
+int		create_pipes(t_command *cmd, int *fd);
+int		is_builtin(t_command *cmd);
 void	child_routine(t_command *cmd);
 void	init_signals(void);
 void	handle_pipes(int *pipefd);
-int	handle_files(t_file *head, int child);
+int		handle_files(t_file *head, int child);
 void	execute(t_command *cmd);
 void	exec_command(t_command *cmd);
 void	exec(char **path, t_command *cmd);
@@ -149,11 +149,18 @@ void    no_such_f_d(t_command *cmd);
 void    is_dir_cmd(t_command *cmd);
 void    no_permission(t_command *cmd);
 void    not_found(t_command *cmd);
-int	ft_perror(char *msg, int child);
-int	ft_execve(t_command *cmd);
-int	waiting(t_command *cmd);
-int execute_builtin(t_command *cmd);
-int	permission_file_error(t_file *file, int child);
+int		ft_perror(char *msg, int child);
+int		ft_execve(t_command *cmd);
+int		waiting(t_command *cmd);
+int		execute_builtin(t_command *cmd);
+int		permission_file_error(t_file *file, int child);
+int		is_dir_error(t_file *file, int child);
+int		no_file_dir(t_file *file, int child);
+int		ambigious_error(t_file *file, int child);
+char	**ft_split(char const *s, char c);
+int		rederiction_in(t_file *file, int child);
+int		rederiction_out(t_file *file, bool child);
+
 
 // builtins
 int		execute_builtin(t_command *cmd);
@@ -161,6 +168,7 @@ int		builtin_pwd(void);
 int		builtin_env(void);
 int		builtin_echo(t_command *cmd);
 int		builtin_exit(t_command *cmd);
+int	builtin_env(void);
 
 // tools
 int		ft_strcmp(const char *s1, const char *s2);

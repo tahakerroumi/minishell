@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror  -g
 
 EXEC = minishell
 
@@ -16,10 +16,10 @@ OBJ = $(SRC:%.c=%.o)
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -lreadline -o $(EXEC)
+	$(CC) $(CFLAGS) -I$(INCLUDES) $(OBJ) -lreadline -o $(EXEC)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
 
 clean:
 	rm -rf $(OBJ)
@@ -32,4 +32,3 @@ re: fclean all
 .SECONDARY: $(OBJ)
 
 .PHONY: all clean fclean re
-

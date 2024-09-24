@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:50:08 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/22 16:54:46 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/23 12:10:00 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,7 @@ void	child_routine(t_command *cmd)
 {
 	init_signals(); // void
 	handle_pipes(cmd->pipefd); //void
-	if (handle_files(cmd->file, 1))
-		return (1);
+	handle_files(cmd->file, 1);
 	if(cmd->argv[0])
 		execute(cmd);
 	exit(0);

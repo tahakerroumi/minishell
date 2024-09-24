@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:53:34 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/22 18:07:48 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/23 12:07:02 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@ static	int	norm_fileout(t_file *file, int child)
 
 	if (!stat(file->name, &st) && S_ISDIR(st.st_mode))
 	{
-		if (is_dir_error(file))
+		if (is_dir_error(file, child))
 			return (1);
 	}
     if ((!access(file->name, F_OK)) && (access(file->name, W_OK) == -1))
-        if (permission_file_error(file))
+	{
+        if (permission_file_error(file, child))
 			return (1);
+	}
 	return (0);
 }
 
@@ -61,6 +63,7 @@ static	int	norm_filein(t_file *file, int child)
 		if (permission_file_error(file, child))
 			return (1);	
 	}
+	return (0);
 }
 
 int	rederiction_in(t_file *file, int child)

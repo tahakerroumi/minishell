@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 11:08:37 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/24 21:03:43 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/24 21:07:51 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ int    builtin_pwd(void)
         return (0);
     }
     else
-        return (ft_perror("getcwd", false));
+        return (ft_perror("getcwd", 0));
 }
 

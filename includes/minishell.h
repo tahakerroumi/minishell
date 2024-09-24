@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/24 20:03:10 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/24 23:07:54 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,10 +137,20 @@ int		execution(t_command *head);
 int		start_executing(t_command *cmd);
 int		create_pipes(t_command *cmd, int *fd);
 int		is_builtin(t_command *cmd);
+int		handle_files(t_file *head);
+int		ft_perror(char *msg, int child);
+int		ft_execve(t_command *cmd);
+int		waiting(t_command *cmd);
+int		execute_builtin(t_command *cmd);
+int		permission_file_error(t_file *file);
+int		is_dir_error(t_file *file);
+int		no_file_dir(t_file *file);
+int		ambigious_error(t_file *file);
+int		rederiction_in(t_file *file);
+int		rederiction_out(t_file *file);
 void	child_routine(t_command *cmd);
 void	init_signals(void);
 void	handle_pipes(int *pipefd);
-void	handle_files(t_file *head);
 void	execute(t_command *cmd);
 void	exec_command(t_command *cmd);
 void	exec(char **path, t_command *cmd);
@@ -149,17 +159,6 @@ void    no_such_f_d(t_command *cmd);
 void    is_dir_cmd(t_command *cmd);
 void    no_permission(t_command *cmd);
 void    not_found(t_command *cmd);
-int		ft_perror(char *msg, int child);
-int		ft_execve(t_command *cmd);
-int		waiting(t_command *cmd);
-int		execute_builtin(t_command *cmd);
-void	permission_file_error(t_file *file);
-void	is_dir_error(t_file *file);
-void	no_file_dir(t_file *file);
-void	ambigious_error(t_file *file);
-char	**ft_split(char const *s, char c);
-void	rederiction_in(t_file *file);
-void	rederiction_out(t_file *file);
 
 
 // builtins
@@ -171,6 +170,7 @@ int		builtin_exit(t_command *cmd);
 int	builtin_env(void);
 
 // tools
+char	**ft_split(char const *s, char c);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strdup(const char *s1);
 void	ft_putstr_fd(char *str, int fd);

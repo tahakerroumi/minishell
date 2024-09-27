@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:19:35 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/26 15:17:40 by aattak           ###   ########.fr       */
+/*   Updated: 2024/09/27 14:58:21 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ int	ft_putenv(char *var)
 		return (1);
 	}
 	g_root.env_count++;
+	g_root.env[g_root.env_count] = NULL;
 	return (0);
 }

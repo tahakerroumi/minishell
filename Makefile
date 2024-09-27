@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror  -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -g
 
 EXEC = minishell
 
@@ -18,7 +18,7 @@ SRC = 	srcs/main.c srcs/debug_functions.c srcs/minishell_loop.c srcs/utilities/x
 		srcs/execution/execute_builtin.c srcs/execution/exec_tools.c srcs/execution/exec_errors.c srcs/execution/exec_commands.c srcs/execution/child_routine.c \
 		srcs/execution/builtins/echo.c srcs/execution/builtins/env.c srcs/execution/builtins/exit.c srcs/execution/builtins/pwd.c srcs/env/ft_getenv.c \
 		srcs/env/realloc_env.c srcs/env/is_valid_env_key.c srcs/env/init_env.c srcs/env/ft_unsetenv.c srcs/env/ft_putenv.c srcs/builtins/builtin_export.c \
-		srcs/builtins/builtin_unset.c
+		srcs/builtins/builtin_unset.c srcs/execution/builtins/cd.c
 
 
 OBJ = $(SRC:%.c=%.o)

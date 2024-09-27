@@ -6,11 +6,19 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:01:18 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/24 20:51:20 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:51:59 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int too_many_args(char **cmd)
+{
+    ft_putstr_fd("minishell: " ,2);
+    ft_putstr_fd(cmd[0] ,2);
+    ft_putstr_fd(": too many arguments\n", 2);
+    return (1);    
+}
 
 void    no_such_f_d(t_command *cmd)
 {

@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/26 18:31:59 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:51:51 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ void    no_such_f_d(t_command *cmd);
 void    is_dir_cmd(t_command *cmd);
 void    no_permission(t_command *cmd);
 void    not_found(t_command *cmd);
+int		too_many_args(char **cmd);
 
 /*tools*/
 char	**ft_split(char const *s, char c);
@@ -186,6 +187,7 @@ int		builtin_env(void);
 int		builtin_echo(t_command *cmd);
 int		builtin_exit(t_command *cmd);
 int		builtin_env(void);
+int		builtin_cd(char **cmd);
 
 /*Debugging Functions*/
 void			print_mask(int *cmd_mask);

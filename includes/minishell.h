@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/24 23:07:54 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:31:59 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@
 # define F_ARGV		0b000100000
 # define F_FILE		0b001000000
 # define F_COMMAND	0b010000000
+
+# define TMP_PREFIX	"/tmp/miniH3ll-tmp."
+# define PRE_LEN	18
+# define TMP_SUFFIX	".here-doc"
+# define SUF_LEN	9
+# define RAND_LEN	16
 
 typedef enum	e_mask
 {
@@ -99,7 +105,6 @@ typedef enum	e_file_type
 	FILE_EX_HEREDOC,
 	FILE_APPEND,
 	FILE_AMBIGUOUS,
-	FILE_IGNORE_ME
 }	t_file_type;
 
 typedef struct	s_file
@@ -123,16 +128,18 @@ typedef struct	s_command
 
 typedef struct	s_root
 {
-	//t_command	*command_line;
-	char	**env;
-	int		sigint;
-	int		exit_status;
-	int		end_loop;
+	t_command		*command;
+	char			**env;
+	size_t			env_size;
+	size_t			env_count;
+	int				sigint;
+	unsigned int	exit_status;
+	int				end_loop;
 }	t_root;
 
 extern t_root	g_root;
 
-// execution
+/*execution*/
 int		execution(t_command *head);
 int		start_executing(t_command *cmd);
 int		create_pipes(t_command *cmd, int *fd);
@@ -160,33 +167,110 @@ void    is_dir_cmd(t_command *cmd);
 void    no_permission(t_command *cmd);
 void    not_found(t_command *cmd);
 
+/*tools*/
+char	**ft_split(char const *s, char c);
+char	*ft_strcpy(char *dest, const char *src);
+size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+char	*ft_strchr(const char *s, int c);
+int		ft_isalpha(int c);
+void	free_string_array(char **av);
+int		ft_isdigit(int c);
+char	*ft_strtrim(char  *s1, char  *set);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_getenv(const char *name);
 
-// builtins
+/*builtin*/
 int		execute_builtin(t_command *cmd);
 int		builtin_pwd(void);
 int		builtin_env(void);
 int		builtin_echo(t_command *cmd);
 int		builtin_exit(t_command *cmd);
-int	builtin_env(void);
+int		builtin_env(void);
 
-// tools
-char	**ft_split(char const *s, char c);
-int		ft_strcmp(const char *s1, const char *s2);
-char	*ft_strdup(const char *s1);
-void	ft_putstr_fd(char *str, int fd);
-int		ft_strlen(char *str);
-char	**ft_split(char const *s, char c);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strcpy(char *dest, const char *src);
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-char	*ft_strchr(const char *s, int c);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-int		ft_isalpha(int c);
-void	free_string_array(char **av);
-int		ft_isdigit(int c);
-char	*ft_strtrim(char  *s1, char  *set);
+/*Debugging Functions*/
+void			print_mask(int *cmd_mask);
+void			print_cmd_args(int **cmd);
+void			print_tokens(t_token *token);
+void			print_files(t_file *file);
+void			print_commands(t_command *command);
 
-// parsing
-char	*ft_getenv(const char *name);
+/*MiniShell Loop*/
+void			minishell_loop();
+
+/*ENVIRONMENT Functions*/
+void			init_env(void);
+char			*ft_getenv(const char *name);
+int				is_valid_env_key(char *key);
+int				realloc_env(void);
+int				ft_putenv(char *var);
+int				ft_unsetenv(char *key);
+
+/*Masker*/
+int				**masker(char *command_line);
+void			mask_quotes(int *cmd);
+void			mask_pipes(int *cmd);
+int				mask_white_spaces(int *cmd);
+void			mask_in_redirs(int *cmd);
+void			mask_out_redirs(int *cmd);
+void			mask_dollar_signs(int *cmd);
+void			unmask_dollar_signs(int **args);
+
+/*Lexer*/
+t_token			*lexer(char *command_line);
+t_syntax_error	throw_syntax_error(int **args);
+t_syntax_error	catch_syntax_error(t_syntax_error error, int **args);
+t_token			*tokenizer(int **cmd_args);
+int				save_files_original(t_token *token);
+
+/*Parser*/
+t_command 		*parser(char *command_line);
+t_command		*form_commands(t_token *token);
+
+/*Expander*/
+int				expander(t_token *token);
+int				expand_token(t_token *token);
+char			*expand_heredoc(char *line, t_file_type type);
+int				set_ignore_me_token(t_token *token);
+int				null_ambiguous_redirs(t_token *token);
+int				ifs(t_token *token);
+
+/*Memory*/
+void			*ft_calloc(size_t count, size_t size);
+void			*ft_memcpy(void *dst, const void *src, size_t n);
+void			free_tokens(t_token *head, int f_flag);
+void			free_commands(t_command *head, int f_flag);
+void			free_files(t_file *head);
+void			free_string_array(char **av);
+void			free_int_split(int **split);
+
+/*Built-ins*/
+int				builtin_export(char **argv);
+int				builtin_unset(char **argv);
+
+/*Executor*/
+int				handle_heredocs(t_command *command);
+
+/*Utilities*/
+int				token_iter(t_token *head, int (*f)(t_token *));
+int				file_iter(t_file *head, int (*f)(t_file *));
+int				command_iter(t_command *head, int (*f)(t_command *));
+
+/*ft_string*/
+void			ft_putstr_fd(char *str, int fd);
+char			*ft_strchr(const char *s, int c);
+int				ft_strcmp(const char *s1, const char *s2);
+char			*ft_strdup(const char *s1);
+int				ft_strlen(char *str);
+void			ft_striteri_l(char *str, size_t len,
+					void (*f)(unsigned int, char *));
+int				**split_int_ptr(int *ptr, int sep);
+void			strcpy_to_int(int *dest, const char *src);
+
+/*ft_type*/
+int				ft_isalnum(int c);
+int				ft_isalpha(int c);
+int				ft_isdigit(int c);
+int				ft_isspace(int c);
+int				is_operator(int c);
 
 #endif

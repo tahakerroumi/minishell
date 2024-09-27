@@ -3,48 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   split_int_ptr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:41:32 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/24 20:52:58 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/21 11:17:14 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*ptr;
-	size_t	i;
-
-	i = 0;
-	if (count && size && (count > ((size_t)-1) / size))
-		return (NULL);
-	ptr = malloc(count * size);
-	if (!ptr)
-		return (NULL);
-	while (i < count * size)
-	{
-		((char *)ptr)[i] = 0;
-		i++;
-	}
-	return (ptr);
-}
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	size_t	i;
-
-	if (dst == src)
-		return (dst);
-	i = 0;
-	while (i < n)
-	{
-		((char *)dst)[i] = ((char *)src)[i];
-		i++;
-	}
-	return (dst);
-}
 
 static size_t	count_int_words(int *ptr, int sep)
 {
@@ -93,16 +59,6 @@ static int	*malloc_nd_fill(int *ptr, int sep, size_t *i)
 	return (word);
 }
 
-void	free_int_split(int **split)
-{
-	size_t	i;
-
-	i = 0;
-	while (split[i])
-		free(split[i++]);
-	free(split);
-}
-
 int	**split_int_ptr(int *ptr, int sep)
 {
 	size_t	i;
@@ -128,5 +84,3 @@ int	**split_int_ptr(int *ptr, int sep)
 	}
 	return (split);
 }
-
-

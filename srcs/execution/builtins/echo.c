@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:41:24 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/24 21:03:32 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/28 11:28:01 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,22 @@ int	checker_echo(char *str)
 	return (0);
 }
 
-int builtin_echo(t_command *cmd)
+int builtin_echo(char **args)
 {
     int	i;
     int	newline;
 
 	i = 1;
     newline = 1;
-    while (cmd->argv[i] && checker_echo(cmd->argv[i]) == 0)
+    while (args[i] && checker_echo(args[i]) == 0)
 	{
 		newline = 0;
 		i++;
 	}
-	while (cmd->argv[i])
+	while (args[i])
 	{
-		ft_putstr_fd(cmd->argv[i], 1);
-		if (cmd->argv[i + 1])
+		ft_putstr_fd(args[i], 1);
+		if (args[i + 1])
 			ft_putstr_fd(" ", 1);
 		i++;
 	}

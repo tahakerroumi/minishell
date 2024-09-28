@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:40:03 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/25 10:11:54 by aattak           ###   ########.fr       */
+/*   Updated: 2024/09/28 20:21:30 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int ac, char **av)
 		// env_init();
 		//g_root.env = __environ;
 		// signals_init();
+		signal(SIGQUIT, SIG_IGN);
 		init_env();
 		minishell_loop();
 		rl_clear_history();

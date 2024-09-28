@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 21:39:02 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/24 21:03:38 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/28 12:52:54 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,27 +70,26 @@ int	word(char *s)
 // 	return (0);
 // }
 
-int builtin_exit(t_command *cmd)
+int builtin_exit(char **args)
 {
 	long 	num;
 
 	ft_putstr_fd("exit\n", 2);
-    if (!cmd->argv[1])
+    if (!args[1])
 	{
         exit(g_root.exit_status);
 	}
-	num = ft_converter(cmd->argv[1]);
-	if (word(cmd->argv[1]))
+	num = ft_converter(args[1]);
+	if (word(args[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(cmd->argv[1], 2);
+		ft_putstr_fd(args[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		exit(2);
 	}
-	else if (cmd->argv[2])
+	else if (args[2])
 	{
 		ft_putstr_fd("minishell: exit:", 2);
-		// ft_putstr_fd(cmd->argv[1], 2);
 		ft_putstr_fd(" too many arguments\n", 2);
 		g_root.exit_status = 1;
 		return (1);

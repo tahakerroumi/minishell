@@ -12,14 +12,14 @@
 
 #include "minishell.h"
 
-static	int	outfile_checker(t_file *file)
+static int	outfile_checker(t_file *file)
 {
-	struct	stat st;
+	struct stat	st;
 
 	if (!stat(file->name, &st) && S_ISDIR(st.st_mode))
 		return (is_dir_error(file));
-    if ((!access(file->name, F_OK)) && (access(file->name, W_OK) == -1))
-        return (permission_file_error(file));
+	if ((!access(file->name, F_OK)) && (access(file->name, W_OK) == -1))
+		return (permission_file_error(file));
 	else
 		return (0);
 }
@@ -29,9 +29,9 @@ int	rederiction_out(t_file *file)
 	if (outfile_checker(file))
 		return (1);
 	if (file->type == FILE_APPEND)
-		file->fd = open (file->name, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		file->fd = open(file->name, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else
-		file->fd = open (file->name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		file->fd = open(file->name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (file->fd < 0)
 		ft_perror("open", 1);
 	if (dup2(file->fd, STDOUT_FILENO) < 0)
@@ -43,7 +43,7 @@ int	rederiction_out(t_file *file)
 	return (0);
 }
 
-static	int	infile_checker(t_file *file)
+static int	infile_checker(t_file *file)
 {
 	if (access(file->name, F_OK) != 0)
 		return (no_file_dir(file));

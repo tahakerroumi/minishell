@@ -48,7 +48,7 @@ void	unmask_dollar_signs(int **args)
 void	mask_dollar_signs(int *cmd)
 {
 	int	i;
-	int in_quote;
+	int	in_quote;
 
 	i = 0;
 	in_quote = 0;

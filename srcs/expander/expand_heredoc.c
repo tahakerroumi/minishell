@@ -46,7 +46,7 @@ static int	get_vars_len(char *line)
 	while (line[i])
 	{
 		if (line[i] == '$' && (line[i + 1] == '_' || ft_isalpha(line[i + 1])
-			|| line[i + 1] == '?'))
+				|| line[i + 1] == '?'))
 		{
 			var_name = extract_var_name(&line[i + 1]);
 			if (!var_name)
@@ -73,7 +73,7 @@ static int	replace_vars(char *line, char *new_line)
 	while (line[i])
 	{
 		if (line[i] == '$' && (line[i + 1] == '_' || ft_isalpha(line[i + 1])
-			|| line[i + 1] == '?'))
+				|| line[i + 1] == '?'))
 		{
 			var_name = extract_var_name(&line[++i]);
 			if (!var_name)

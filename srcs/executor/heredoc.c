@@ -14,7 +14,7 @@
 
 void	random_char(unsigned int i, char *s)
 {
-	unsigned char *str;
+	unsigned char	*str;
 
 	str = (unsigned char *)s;
 	if (!(i % 3) && !(i % 5) && i)
@@ -57,9 +57,9 @@ static int	buffer_to_file(char *buffer)
 	int	fd;
 
 	fd = open("tmp_heredoc.txt", O_RDWR | O_CREAT | O_APPEND, 0644);
-	ft_putstr_fd(GREEN"["RESET, fd);
+	ft_putstr_fd(GREEN "[" RESET, fd);
 	ft_putstr_fd(buffer, fd);
-	ft_putstr_fd(GREEN"]"RESET, fd);
+	ft_putstr_fd(GREEN "]" RESET, fd);
 	ft_putstr_fd("\n========================\n", fd);
 	close(fd);
 	free(buffer);
@@ -119,7 +119,8 @@ static int	fill_heredoc(t_file *file)
 	if (file->type == FILE_EX_HEREDOC)
 		file->type = FILE_HEREDOC;
 	free(line);
-	if(file->type == FILE_HEREDOC && buffer_to_file(buffer)) // i must free buffer in the function
+	if (file->type == FILE_HEREDOC && buffer_to_file(buffer))
+		// i must free buffer in the function
 		return (1);
 	return (0);
 }

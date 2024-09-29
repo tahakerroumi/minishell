@@ -31,9 +31,9 @@ t_token	*lexer(char *command_line)
 	if (token_iter(token, save_files_original))
 	{
 		/// hande error here ...
-		free_tokens(token, F_ORIGINAL|F_MASK|F_TOKEN);
+		free_tokens(token, F_ORIGINAL | F_MASK | F_TOKEN);
 		return (NULL);
 	}
-	//print_tokens(token); //////////////////////// delete me 
+	// print_tokens(token); //////////////////////// delete me
 	return (token);
 }

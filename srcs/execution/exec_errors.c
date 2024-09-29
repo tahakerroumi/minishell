@@ -12,43 +12,42 @@
 
 #include "minishell.h"
 
-int too_many_args(char **cmd)
+int	too_many_args(char **cmd)
 {
-    ft_putstr_fd("minishell: " ,2);
-    ft_putstr_fd(cmd[0] ,2);
-    ft_putstr_fd(": too many arguments\n", 2);
-    return (1);    
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd[0], 2);
+	ft_putstr_fd(": too many arguments\n", 2);
+	return (1);
 }
 
-void    no_such_f_d(t_command *cmd)
+void	no_such_f_d(t_command *cmd)
 {
-    ft_putstr_fd("minishell: " ,2);
-    ft_putstr_fd(cmd->argv[0] ,2);
-    ft_putstr_fd(": No such file or directory\n", 2);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd->argv[0], 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
 	exit(127);
 }
 
-void    is_dir_cmd(t_command *cmd)
+void	is_dir_cmd(t_command *cmd)
 {
-    ft_putstr_fd("minishell: " ,2);
-    ft_putstr_fd(cmd->argv[0] ,2);
-    ft_putstr_fd(": Is a directory\n", 2);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd->argv[0], 2);
+	ft_putstr_fd(": Is a directory\n", 2);
 	exit(126);
 }
 
-void    no_permission(t_command *cmd)
+void	no_permission(t_command *cmd)
 {
-    ft_putstr_fd("minishell: " ,2);
-    ft_putstr_fd(cmd->argv[0] ,2);
-    ft_putstr_fd(": Permission denied\n", 2);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd->argv[0], 2);
+	ft_putstr_fd(": Permission denied\n", 2);
 	exit(126);
 }
 
-void    not_found(t_command *cmd)
+void	not_found(t_command *cmd)
 {
-    ft_putstr_fd("minishell: " ,2);
-    ft_putstr_fd(cmd->argv[0] ,2);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd->argv[0], 2);
 	ft_putstr_fd(": Command not found\n", 2);
 	exit(127);
 }
-

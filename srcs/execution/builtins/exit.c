@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 21:39:02 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/28 12:52:54 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/29 11:48:04 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_converter(const char *nptr)
 	int	res;
 
 	if (!nptr)
-        return (0);
+		return (0);
 	i = 0;
 	res = 0;
 	signe = 1;
@@ -57,27 +57,14 @@ int	word(char *s)
 	return (0);
 }
 
-// int check_max(int		long num , char *s)
-// {
-// 	char *p;
-	
-// 	p = ft_strtrim(s, " \t\n");
-// 	if (ft_strlen(p) > 20)
-// 		return (free(p), 1);
-// 	if ((num < 0 && p[0] != '-') || (num > 0 && p[0] == '-'))
-// 		return (free(p), 1);
-// 	free(p);
-// 	return (0);
-// }
-
-int builtin_exit(char **args)
+int	builtin_exit(char **args)
 {
-	long 	num;
+	long	num;
 
 	ft_putstr_fd("exit\n", 2);
-    if (!args[1])
+	if (!args[1])
 	{
-        exit(g_root.exit_status);
+		exit(g_root.exit_status);
 	}
 	num = ft_converter(args[1]);
 	if (word(args[1]))

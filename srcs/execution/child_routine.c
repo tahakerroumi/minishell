@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:50:08 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/28 20:20:45 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/29 12:08:17 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@ void	execute(t_command *cmd)
 
 int	handle_files(t_file *head)
 {
-	t_file *file;
+	t_file	*file;
 
 	file = head;
 	while (file)
 	{
 		if (file->type == FILE_AMBIGUOUS)
 		{
-            if (ambigious_error(file))
+			if (ambigious_error(file))
 				return (1);
 		}
-		if (file->type == FILE_IN) // || file->type == FILE_HEREDOC)
+		if (file->type == FILE_IN)
 		{
 			if (rederiction_in(file))
 				return (1);
@@ -73,11 +73,11 @@ void	init_signals(void)
 
 void	child_routine(t_command *cmd)
 {
-	init_signals(); // void
-	handle_pipes(cmd->pipefd); //void
+	init_signals();
+	handle_pipes(cmd->pipefd);
 	if (handle_files(cmd->file))
 		exit(1);
-	if(cmd->argv[0])
+	if (cmd->argv[0])
 		execute(cmd);
 	exit(0);
 }

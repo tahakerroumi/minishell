@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
 t_root	g_root;
 
@@ -21,7 +21,7 @@ int	main(int ac, char **av)
 	{
 		// minishell_init(); // init shell variables like IFS
 		// env_init();
-		//g_root.env = __environ;
+		// g_root.env = __environ;
 		// signals_init();
 		signal(SIGQUIT, SIG_IGN);
 		init_env();
@@ -32,6 +32,6 @@ int	main(int ac, char **av)
 		////////////////////////////////close(3);/////////////////
 		return (0);
 	}
-	ft_putstr_fd(RED"minishell accepts no arguments\n"RESET, 2);
+	ft_putstr_fd(RED "minishell accepts no arguments\n" RESET, 2);
 	return (1);
 }

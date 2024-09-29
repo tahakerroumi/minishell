@@ -23,13 +23,13 @@ static int	*str_to_mask(char *str)
 	if (str[0] == 0)
 		return (NULL);
 	//////////////////////////////////////////////
-	//add_history only non-null command///////////
+	// add_history only non-null command///////////
 	add_history(str);
 	//////////////////////////////////////////////
 	len = ft_strlen(str) + 3;
 	mask = (int *)malloc(len * sizeof(int));
 	if (!mask)
-		return NULL;
+		return (NULL);
 	mask[0] = MASK_SPACE;
 	i = 1;
 	while (i < len - 2)
@@ -95,26 +95,23 @@ static void	mask_command_line(int *cmd_mask)
 	mask_in_redirs(cmd_mask);
 	mask_out_redirs(cmd_mask);
 	mask_dollar_signs(cmd_mask);
-}	
+}
 
 int	**masker(char *command_line)
 {
-	int		*cmd_mask;
-	int		**cmd_args;
+	int	*cmd_mask;
+	int	**cmd_args;
 
 	cmd_mask = str_to_mask(command_line); ////////////// char to int
 	free(command_line);
 	if (!cmd_mask)
 		return (NULL);
-
 	mask_command_line(cmd_mask); ////////////////////// mask command line
-	//print_mask(cmd_mask);//
-
+	// print_mask(cmd_mask);//
 	cmd_mask = add_white_spaces(cmd_mask); //////////////// add whitespaces
 	if (!cmd_mask)
 		return (NULL);
-	//print_mask(cmd_mask);//
-
+	// print_mask(cmd_mask);//
 	cmd_args = split_int_ptr(cmd_mask, MASK_SPACE); /////// split cmd args
 	free(cmd_mask);
 	if (!cmd_args)
@@ -124,8 +121,7 @@ int	**masker(char *command_line)
 		free(cmd_args);
 		return (NULL);
 	}
-
 	unmask_dollar_signs(cmd_args); ////////////////// unmask dollar signs
-	//print_cmd_args(cmd_args);
+	// print_cmd_args(cmd_args);
 	return (cmd_args);
 }

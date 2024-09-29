@@ -50,7 +50,7 @@ static t_syntax_error	check_operator_syntax(int **args, size_t i)
 	return (error);
 }
 
-static t_syntax_error check_unclosed_quotes(int *args)
+static t_syntax_error	check_unclosed_quotes(int *args)
 {
 	size_t	i;
 	int		in_s_quote;
@@ -64,7 +64,7 @@ static t_syntax_error check_unclosed_quotes(int *args)
 		while (args[i] && args[i] != MASK_S_QUOTE && args[i] != MASK_D_QUOTE)
 			i++;
 		if (!args[i])
-			break;
+			break ;
 		if (args[i] == MASK_S_QUOTE)
 			in_s_quote = !in_s_quote;
 		else
@@ -78,8 +78,8 @@ static t_syntax_error check_unclosed_quotes(int *args)
 
 t_syntax_error	throw_syntax_error(int **args)
 {
-	size_t				i;
-	t_syntax_error		error;
+	size_t			i;
+	t_syntax_error	error;
 
 	i = 0;
 	error = NO_SYNTAX_ERROR;
@@ -96,30 +96,30 @@ t_syntax_error	throw_syntax_error(int **args)
 	return (error);
 }
 
-t_syntax_error catch_syntax_error(t_syntax_error error, int **args)
+t_syntax_error	catch_syntax_error(t_syntax_error error, int **args)
 {
 	if (error)
 	{
 		free_int_split(args);
-		//i have also to set the exit status $? to 2
+		// i have also to set the exit status $? to 2
 	}
 	if (error == UNEXPECTED_PIPE_ERROR)
-		ft_putstr_fd(RED"bash: syntax error near unexpected token `|'\n"
-			RESET, 2);
+		ft_putstr_fd(RED "bash: syntax error near unexpected token `|'\n" RESET,
+			2);
 	else if (error == UNEXPECTED_INPUT_ERROR)
-		ft_putstr_fd(RED"bash: syntax error near unexpected token `<'\n"
-			RESET, 2);
+		ft_putstr_fd(RED "bash: syntax error near unexpected token `<'\n" RESET,
+			2);
 	else if (error == UNEXPECTED_OUTPUT_ERROR)
-		ft_putstr_fd(RED"bash: syntax error near unexpected token `>'\n"
-			RESET, 2);
+		ft_putstr_fd(RED "bash: syntax error near unexpected token `>'\n" RESET,
+			2);
 	else if (error == UNEXPECTED_HEREDOC_ERROR)
-		ft_putstr_fd(RED"bash: syntax error near unexpected token `<<'\n"
-			RESET, 2);
+		ft_putstr_fd(RED "bash: syntax error near unexpected token `<<'\n" RESET,
+			2);
 	else if (error == UNEXPECTED_APPEND_ERROR)
-		ft_putstr_fd(RED"bash: syntax error near unexpected token `>>'\n"
-			RESET, 2);
+		ft_putstr_fd(RED "bash: syntax error near unexpected token `>>'\n" RESET,
+			2);
 	else if (error == UNEXPECTED_NEW_LINE_ERROR)
-		ft_putstr_fd(RED"bash: syntax error near unexpected token `newline'\n"
-			RESET, 2);
+		ft_putstr_fd(RED "bash: syntax error near unexpected token `newline'\n" RESET,
+			2);
 	return (error);
 }

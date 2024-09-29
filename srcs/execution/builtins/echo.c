@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:41:24 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/28 11:28:01 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/29 11:27:38 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ int	checker_echo(char *str)
 	return (0);
 }
 
-int builtin_echo(char **args)
+int	builtin_echo(char **args)
 {
-    int	i;
-    int	newline;
+	int	i;
+	int	newline;
 
 	i = 1;
-    newline = 1;
-    while (args[i] && checker_echo(args[i]) == 0)
+	newline = 1;
+	while (args[i] && checker_echo(args[i]) == 0)
 	{
 		newline = 0;
 		i++;
@@ -53,4 +53,3 @@ int builtin_echo(char **args)
 		ft_putstr_fd("\n", 1);
 	return (0);
 }
-

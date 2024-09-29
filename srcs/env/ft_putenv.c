@@ -14,7 +14,7 @@
 
 // export var=hello
 // export var    // this one must do nothing
-				// if (!ft_strchr(argv[i], '=') && ft_getenv(argv[i])) => then do nothing
+// if (!ft_strchr(argv[i], '=') && ft_getenv(argv[i])) => then do nothing
 
 int	ft_putenv(char *var)
 {

@@ -86,8 +86,8 @@ int	save_files_original(t_token *token)
 {
 	int	i;
 
-	if (token->type == TOKEN_IN_FILE || token->type == TOKEN_OUT_FILE ||
-		token->type == TOKEN_APPEND_FILE || token->type == TOKEN_DELIMITER)
+	if (token->type == TOKEN_IN_FILE || token->type == TOKEN_OUT_FILE
+		|| token->type == TOKEN_APPEND_FILE || token->type == TOKEN_DELIMITER)
 	{
 		i = 0;
 		while (token->mask[i])

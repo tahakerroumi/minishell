@@ -14,22 +14,22 @@
 
 void	exec_path(t_command *cmd)
 {
-	struct stat st;
+	struct stat	st;
 
 	if (access(cmd->argv[0], F_OK) != 0)
-        no_such_f_d(cmd);
-    else if (access(cmd->argv[0], X_OK) == 0)
+		no_such_f_d(cmd);
+	else if (access(cmd->argv[0], X_OK) == 0)
 	{
-        if (stat(cmd->argv[0], &st) == 0)
+		if (stat(cmd->argv[0], &st) == 0)
 		{
-            if (S_ISDIR(st.st_mode))
-                is_dir_cmd(cmd);
-            else
-                ft_execve(cmd);
-        }
-    }
-    else
-        no_permission(cmd);
+			if (S_ISDIR(st.st_mode))
+				is_dir_cmd(cmd);
+			else
+				ft_execve(cmd);
+		}
+	}
+	else
+		no_permission(cmd);
 }
 
 void	exec(char **path, t_command *cmd)
@@ -54,22 +54,24 @@ void	exec(char **path, t_command *cmd)
 		i++;
 	}
 	free_string_array(path);
-    not_found(cmd);
+	not_found(cmd);
 }
 
 void	exec_command(t_command *cmd)
 {
 	char	*getpath;
+	char	**path;
 
 	getpath = ft_strdup(ft_getenv("PATH"));
 	if (!getpath)
 		ft_perror("malloc", 1);
-	char **path = ft_split(getpath, ':'); // fix the split or make a new one if its needed
+	path = ft_split(getpath, ':');
+	// fix the split or make a new one if its needed
 	free(getpath);
 	if (!cmd->argv[0][0])
 	{
 		free_string_array(path);
-        not_found(cmd);
+		not_found(cmd);
 	}
 	exec(path, cmd);
 }

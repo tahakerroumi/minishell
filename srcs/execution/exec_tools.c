@@ -14,10 +14,10 @@
 
 int	ft_perror(char *msg, int child)
 {
-    perror(msg);
+	perror(msg);
 	if (child)
 		exit(1);
-    return (1);
+	return (1);
 }
 
 int	ft_execve(t_command *cmd)

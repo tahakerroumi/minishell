@@ -29,7 +29,7 @@ static int	get_argc(t_token *token)
 static void	fill_file_data(t_file *file, t_token *token)
 {
 	if (token->type == TOKEN_DELIMITER && (ft_strchr(token->original, '\'')
-		|| ft_strchr(token->original, '"')))
+				|| ft_strchr(token->original, '"')))
 		file->type = FILE_HEREDOC;
 	else if (token->type == TOKEN_DELIMITER)
 		file->type = FILE_EX_HEREDOC;
@@ -69,7 +69,7 @@ t_command	*form_commands(t_token *token)
 		if (!command)
 		{
 			free_commands(command, F_PATH | F_ARGV | F_FILE | F_COMMAND);
-			return(NULL);
+			return (NULL);
 		}
 		if (tail)
 			tail->next = command;
@@ -81,7 +81,7 @@ t_command	*form_commands(t_token *token)
 		if (!(command->argv))
 		{
 			free_commands(command, F_PATH | F_ARGV | F_FILE | F_COMMAND);
-			return(NULL);
+			return (NULL);
 		}
 		i = 0;
 		file_tail = NULL;
@@ -97,8 +97,9 @@ t_command	*form_commands(t_token *token)
 				file = (t_file *)ft_calloc(1, sizeof(t_file));
 				if (!file)
 				{
-					free_commands(command, F_PATH | F_ARGV | F_FILE | F_COMMAND);
-					return(NULL);
+					free_commands(command,
+						F_PATH | F_ARGV | F_FILE | F_COMMAND);
+					return (NULL);
 				}
 				if (file_tail)
 					file_tail->next = file;
@@ -106,7 +107,8 @@ t_command	*form_commands(t_token *token)
 				if (!(command->file))
 					command->file = file;
 				fill_file_data(file, token->next);
-				token = token->next; // i can remove this line if i got norm errors
+				token = token->next;
+				// i can remove this line if i got norm errors
 			}
 			token->content = NULL;
 			token = token->next;

@@ -36,10 +36,10 @@ static char	*extract_var_name(int *mask)
 
 static int	get_vars_len(int *mask) /// if the function failed it return -1
 {
-	int		i;
-	size_t	len;
-	char	*var_name;
-	char	*var_value;
+	int i;
+	size_t len;
+	char *var_name;
+	char *var_value;
 
 	i = 0;
 	len = 0;
@@ -65,7 +65,7 @@ static int	get_vars_len(int *mask) /// if the function failed it return -1
 				printf("[NULL]\n");
 			// free allocs
 			free(var_name);
-			// free(var_value); /// this is a dumb invalid free 
+			// free(var_value); /// this is a dumb invalid free
 			// cuz its just a pointer to the value in the env.
 		}
 		i++; /// this also skip the dollar sign
@@ -110,11 +110,11 @@ static int	*reallocate_token_mask(int *mask)
 	vars_len = get_vars_len(mask);
 	if (vars_len == -1)
 		return (NULL);
-	//printf("\nvars_len = %d\n\n", vars_len); /// test
+	// printf("\nvars_len = %d\n\n", vars_len); /// test
 	len = 0;
 	while (mask[len])
 		len++;
-	//printf("old mask len = %d  vars len = %d \n", len, vars_len);
+	// printf("old mask len = %d  vars len = %d \n", len, vars_len);
 	new_mask = (int *)ft_calloc(len + vars_len + 1, sizeof(int));
 	return (new_mask);
 }

@@ -18,8 +18,8 @@ static int	mask_to_content(t_token *token)
 	int	j;
 
 	if ((token->type == TOKEN_WORD || token->type == TOKEN_IN_FILE
-		|| token->type == TOKEN_OUT_FILE || token->type == TOKEN_APPEND_FILE
-		|| token->type == TOKEN_DELIMITER) && token->mask)
+			|| token->type == TOKEN_OUT_FILE || token->type == TOKEN_APPEND_FILE
+			|| token->type == TOKEN_DELIMITER) && token->mask)
 	{
 		i = 0;
 		while (token->mask[i])
@@ -39,7 +39,7 @@ static int	mask_to_content(t_token *token)
 	return (0);
 }
 
-t_command *parser(char *command_line)
+t_command	*parser(char *command_line)
 {
 	t_token		*token;
 	t_command	*command;

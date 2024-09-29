@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int execute_builtin(t_command *cmd)
+int	execute_builtin(t_command *cmd)
 {
 	if (!cmd->argv[0])
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/28 14:03:44 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/29 15:17:29 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,12 +183,11 @@ char	*ft_getenv(const char *name);
 
 /*builtin*/
 int		execute_builtin(t_command *cmd);
-int		builtin_pwd(void);
-int		builtin_env(void);
-int		builtin_echo(char **cmd);
-int		builtin_exit(char **cmd);
-int		builtin_env(void);
-int		builtin_cd(char **cmd);
+int		builtin_pwd(char **argv);
+int		builtin_echo(char **argv);
+int		builtin_exit(char **argv);
+int		builtin_env(char **argv);
+int		builtin_cd(char **argv);
 
 /*Debugging Functions*/
 void			print_mask(int *cmd_mask);

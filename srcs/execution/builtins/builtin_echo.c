@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:41:24 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/29 11:27:38 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/29 15:19:50 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,22 @@ int	checker_echo(char *str)
 	return (0);
 }
 
-int	builtin_echo(char **args)
+int	builtin_echo(char **argv)
 {
 	int	i;
 	int	newline;
 
 	i = 1;
 	newline = 1;
-	while (args[i] && checker_echo(args[i]) == 0)
+	while (argv[i] && checker_echo(argv[i]) == 0)
 	{
 		newline = 0;
 		i++;
 	}
-	while (args[i])
+	while (argv[i])
 	{
-		ft_putstr_fd(args[i], 1);
-		if (args[i + 1])
+		ft_putstr_fd(argv[i], 1);
+		if (argv[i + 1])
 			ft_putstr_fd(" ", 1);
 		i++;
 	}

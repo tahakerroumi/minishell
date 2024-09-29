@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 12:23:37 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/29 11:26:43 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/29 14:58:55 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ int	execution(t_command *head)
 	{
 		// save_stdio(); if (FAILURE) => perror then
 		// cleanup : close herdocs and free command list
-		// handle_files(cmd->file);
 		g_root.exit_status = execute_builtin(cmd);
 		// reset_stdio(); if (FAILURE) => perror then
 		// cleanup : close herdocs and free command list

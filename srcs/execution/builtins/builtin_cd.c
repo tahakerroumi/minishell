@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 09:16:03 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/29 11:08:28 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/29 15:16:00 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ char	*ft_getcwd(void)
 	return (NULL);
 }
 
-int	change_dir(char **args)
+int	change_dir(char **argv)
 {
 	char	*cwd;
 
 	cwd = ft_strjoin("OLDPWD=", ft_getcwd());
-	if (!args[1] && chdir(ft_getenv("HOME")))
+	if (!argv[1] && chdir(ft_getenv("HOME")))
 		return (free(cwd), ft_perror("cd", 0));
-	else if (args[1] && chdir(args[1]))
+	else if (argv[1] && chdir(argv[1]))
 		return (free(cwd), ft_perror("cd", 0));
 	if (cwd)
 		ft_putenv(cwd);
@@ -40,11 +40,11 @@ int	change_dir(char **args)
 	return (0);
 }
 
-int	builtin_cd(char **args)
+int	builtin_cd(char **argv)
 {
-	if (!ft_getenv("HOME") && !args[1])
+	if (!ft_getenv("HOME") && !argv[1])
 		return (ft_putstr_fd("minishell: cd: HOME not set\n", 2), 1);
-	else if (args[1] && args[2])
-		return (too_many_args(args));
-	return (change_dir(args));
+	else if (argv[1] && argv[2])
+		return (too_many_args(argv));
+	return (change_dir(argv));
 }

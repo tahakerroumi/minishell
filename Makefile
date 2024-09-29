@@ -14,11 +14,11 @@ SRC = 	srcs/main.c srcs/debug_functions.c srcs/minishell_loop.c srcs/utilities/x
 		srcs/ft_type/is_operator.c srcs/ft_string/ft_putstr_fd.c srcs/ft_string/ft_strchr.c srcs/ft_string/ft_strcmp.c srcs/ft_string/ft_strdup.c \
 		srcs/ft_string/ft_striteri_l.c srcs/ft_string/ft_strlen.c srcs/ft_string/split_int_ptr.c srcs/ft_string/strcpy_to_int.c srcs/expander/expand_heredoc.c \
 		srcs/expander/expand_token.c srcs/expander/expander.c srcs/expander/ifs.c srcs/executor/heredoc.c srcs/execution/start.c \
-		srcs/execution/tools.c srcs/execution/rederictions.c srcs/execution/ft_strtrim.c srcs/execution/ft_split.c srcs/execution/file_errors.c \
+		srcs/execution/tools.c srcs/execution/rederictions.c srcs/execution/ft_split.c srcs/execution/file_errors.c \
 		srcs/execution/execute_builtin.c srcs/execution/exec_tools.c srcs/execution/exec_errors.c srcs/execution/exec_commands.c srcs/execution/child_routine.c \
-		srcs/execution/builtins/echo.c srcs/execution/builtins/env.c srcs/execution/builtins/exit.c srcs/execution/builtins/pwd.c srcs/env/ft_getenv.c \
+		srcs/execution/builtins/builtin_echo.c srcs/execution/builtins/builtin_env.c srcs/execution/builtins/builtin_exit.c srcs/execution/builtins/builtin_pwd.c srcs/env/ft_getenv.c \
 		srcs/env/realloc_env.c srcs/env/is_valid_env_key.c srcs/env/init_env.c srcs/env/ft_unsetenv.c srcs/env/ft_putenv.c srcs/builtins/builtin_export.c \
-		srcs/builtins/builtin_unset.c srcs/execution/builtins/cd.c
+		srcs/builtins/builtin_unset.c srcs/execution/builtins/builtin_cd.c
 
 
 OBJ = $(SRC:%.c=%.o)

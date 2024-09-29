@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 21:39:02 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/29 11:48:04 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/29 15:21:33 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_converter(const char *nptr)
+static int	ft_converter(const char *nptr)
 {
-	int	i;
-	int	signe;
-	int	res;
+	long	i;
+	int		signe;
+	long	res;
 
 	if (!nptr)
 		return (0);
@@ -39,7 +39,7 @@ int	ft_converter(const char *nptr)
 	return (res * signe);
 }
 
-int	word(char *s)
+static int	word(char *s)
 {
 	int	i;
 
@@ -57,29 +57,29 @@ int	word(char *s)
 	return (0);
 }
 
-int	builtin_exit(char **args)
+int	builtin_exit(char **argv)
 {
 	long	num;
 
 	ft_putstr_fd("exit\n", 2);
-	if (!args[1])
+	if (!argv[1])
 	{
 		exit(g_root.exit_status);
 	}
-	num = ft_converter(args[1]);
-	if (word(args[1]))
+	if (word(argv[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(args[1], 2);
+		ft_putstr_fd(argv[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		exit(2);
 	}
-	else if (args[2])
+	else if (argv[2])
 	{
 		ft_putstr_fd("minishell: exit:", 2);
 		ft_putstr_fd(" too many arguments\n", 2);
 		g_root.exit_status = 1;
 		return (1);
 	}
+	num = ft_converter(argv[1]);
 	exit((unsigned char)num);
 }

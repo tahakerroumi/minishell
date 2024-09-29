@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:50:08 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/29 12:08:17 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/29 15:32:25 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,8 @@ void	handle_pipes(int *pipefd)
 		close(pipefd[2]);
 }
 
-void	init_signals(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-}
-
 void	child_routine(t_command *cmd)
 {
-	init_signals();
 	handle_pipes(cmd->pipefd);
 	if (handle_files(cmd->file))
 		exit(1);

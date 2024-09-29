@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/19 18:17:52 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/29 12:15:16 by tkerroum         ###   ########.fr       */
+/*   Created: 2024/09/19 11:08:37 by tkerroum          #+#    #+#             */
+/*   Updated: 2024/09/29 15:22:23 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_env(void)
+int	builtin_pwd(char **argv)
 {
-	int	i;
+	char	*cwd;
 
-	i = 0;
-	while (g_root.env && g_root.env[i])
+	(void)argv;
+	cwd = ft_getcwd();
+	if (cwd)
 	{
-		if (ft_strchr(g_root.env[i], '='))
-		{
-			ft_putstr_fd(g_root.env[i], 1);
-			ft_putstr_fd("\n", 1);
-		}
-		i++;
+		ft_putstr_fd(cwd, 1);
+		ft_putstr_fd("\n", 1);
+		return (0);
 	}
-	return (0);
+	return (ft_perror("getcwd", 0));
 }

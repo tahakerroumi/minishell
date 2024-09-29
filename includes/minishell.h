@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/29 15:17:29 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/29 15:49:13 by tkerroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ int		ambigious_error(t_file *file);
 int		rederiction_in(t_file *file);
 int		rederiction_out(t_file *file);
 void	child_routine(t_command *cmd);
-void	init_signals(void);
 void	handle_pipes(int *pipefd);
 void	execute(t_command *cmd);
 void	exec_command(t_command *cmd);
@@ -173,16 +172,9 @@ char	*ft_getcwd(void);
 char	**ft_split(char const *s, char c);
 char	*ft_strcpy(char *dest, const char *src);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-char	*ft_strchr(const char *s, int c);
-int		ft_isalpha(int c);
-void	free_string_array(char **av);
-int		ft_isdigit(int c);
-char	*ft_strtrim(char  *s1, char  *set);
 char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_getenv(const char *name);
 
 /*builtin*/
-int		execute_builtin(t_command *cmd);
 int		builtin_pwd(char **argv);
 int		builtin_echo(char **argv);
 int		builtin_exit(char **argv);

@@ -6,7 +6,7 @@
 /*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 11:53:18 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/21 11:54:34 by aattak           ###   ########.fr       */
+/*   Updated: 2024/09/29 14:29:49 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,22 @@ void	mask_quotes(int *cmd)
 	i = 0;
 	while (cmd[i])
 	{
-		while (cmd[i] && cmd[i] != (int)'\'' && cmd[i] != (int)'\"')
+		while (cmd[i] && cmd[i] != (int) '\'' && cmd[i] != (int) '\"')
 			i++;
-		if (cmd[i] == (int)'\'')
+		if (cmd[i] == (int) '\'')
 		{
 			cmd[i++] = MASK_S_QUOTE;
-			while (cmd[i] && cmd[i] != (int)'\'')
+			while (cmd[i] && cmd[i] != (int) '\'')
 				i++;
-			if (cmd[i] == (int)'\'')
+			if (cmd[i] == (int) '\'')
 				cmd[i++] = MASK_S_QUOTE;
 		}
-		if (cmd[i] == (int)'\"')
+		if (cmd[i] == (int) '\"')
 		{
 			cmd[i++] = MASK_D_QUOTE;
-			while (cmd[i] && cmd[i] != (int)'\"')
+			while (cmd[i] && cmd[i] != (int) '\"')
 				i++;
-			if (cmd[i] == (int)'\"')
+			if (cmd[i] == (int) '\"')
 				cmd[i++] = MASK_D_QUOTE;
 		}
 	}

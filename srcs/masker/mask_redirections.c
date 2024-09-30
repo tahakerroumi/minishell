@@ -6,7 +6,7 @@
 /*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 11:57:26 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/21 11:57:37 by aattak           ###   ########.fr       */
+/*   Updated: 2024/09/29 14:38:55 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	mask_in_redirs(int *cmd)
 	{
 		if (cmd[i] == MASK_S_QUOTE || cmd[i] == MASK_D_QUOTE)
 			in_quote = !in_quote;
-		else if (!in_quote && cmd[i] == (int)'<')
+		else if (!in_quote && cmd[i] == (int) '<')
 		{
-			if (cmd[i + 1] == (int)'<')
+			if (cmd[i + 1] == (int) '<')
 			{
 				cmd[i] = MASK_HEREDOC;
 				cmd[i + 1] = MASK_SPACE;
@@ -48,9 +48,9 @@ void	mask_out_redirs(int *cmd)
 	{
 		if (cmd[i] == MASK_S_QUOTE || cmd[i] == MASK_D_QUOTE)
 			in_quote = !in_quote;
-		else if (!in_quote && cmd[i] == (int)'>')
+		else if (!in_quote && cmd[i] == (int) '>')
 		{
-			if (cmd[i + 1] == (int)'>')
+			if (cmd[i + 1] == (int) '>')
 			{
 				cmd[i] = MASK_APPEND;
 				cmd[i + 1] = MASK_SPACE;

@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_pwd.c                                      :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/19 11:08:37 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/29 15:22:23 by tkerroum         ###   ########.fr       */
+/*   Created: 2024/09/29 16:44:59 by aattak            #+#    #+#             */
+/*   Updated: 2024/09/29 16:45:16 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_pwd(char **argv)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	char	*cwd;
+	size_t	i;
 
-	(void)argv;
-	cwd = ft_getcwd();
-	if (cwd)
+	i = 0;
+	while (src[i] && dstsize > i + 1)
 	{
-		ft_putstr_fd(cwd, 1);
-		ft_putstr_fd("\n", 1);
-		return (0);
+		dst[i] = src[i];
+		i++;
 	}
-	return (ft_perror("getcwd", 0));
+	if (dstsize)
+		dst[i] = '\0';
+	while (src[i])
+		i++;
+	return (i);
 }

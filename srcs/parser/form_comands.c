@@ -6,7 +6,7 @@
 /*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:46:55 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/21 12:17:38 by aattak           ###   ########.fr       */
+/*   Updated: 2024/09/29 14:42:08 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	get_argc(t_token *token)
 static void	fill_file_data(t_file *file, t_token *token)
 {
 	if (token->type == TOKEN_DELIMITER && (ft_strchr(token->original, '\'')
-				|| ft_strchr(token->original, '"')))
+			|| ft_strchr(token->original, '"')))
 		file->type = FILE_HEREDOC;
 	else if (token->type == TOKEN_DELIMITER)
 		file->type = FILE_EX_HEREDOC;
@@ -51,70 +51,80 @@ static void	fill_file_data(t_file *file, t_token *token)
 	token->original = NULL;
 }
 
-t_command	*form_commands(t_token *token)
+static int	create_command(t_token *token, t_command **tail)
 {
-	int			i;
 	int			argc;
-	t_command	*head;
-	t_command	*tail;
 	t_command	*command;
-	t_file		*file;
-	t_file		*file_tail;
 
-	head = NULL;
-	tail = NULL;
+	command = (t_command *)ft_calloc(1, sizeof(t_command));
+	if (!command)
+	{
+		free_commands(g_root.command, F_PATH | F_ARGV | F_FILE | F_COMMAND);
+		return (1);
+	}
+	if (*tail)
+		(*tail)->next = command;
+	*tail = command;
+	if (!g_root.command)
+		g_root.command = command;
+	argc = get_argc(token);
+	command->argv = (char **)ft_calloc(argc + 1, sizeof(char *));
+	if (!(command->argv))
+	{
+		free_commands(g_root.command, F_PATH | F_ARGV | F_FILE | F_COMMAND);
+		return (1);
+	}
+	return (0);
+}
+
+static int	fill_command_data(t_token *token, t_command *cmd, t_file **tail,
+	int *argc)
+{
+	t_file		*file;
+
+	if (token->type == TOKEN_WORD)
+		cmd->argv[(*argc)++] = token->content;
+	else if (token->type == TOKEN_INPUT || token->type == TOKEN_OUTPUT
+		|| token->type == TOKEN_HEREDOC || token->type == TOKEN_APPEND)
+	{
+		file = (t_file *)ft_calloc(1, sizeof(t_file));
+		if (!file)
+		{
+			free_commands(g_root.command, F_PATH | F_ARGV | F_FILE | F_COMMAND);
+			return (1);
+		}
+		if (*tail)
+			(*tail)->next = file;
+		*tail = file;
+		if (!(cmd->file))
+			cmd->file = file;
+		fill_file_data(file, token->next);
+	}
+	token->content = NULL;
+	return (0);
+}
+
+int	form_commands(t_token *token)
+{
+	int			argc;
+	t_command	*cmds_tail;
+	t_file		*files_tail;
+
+	cmds_tail = NULL;
 	while (token)
 	{
-		command = (t_command *)ft_calloc(1, sizeof(t_command));
-		if (!command)
-		{
-			free_commands(command, F_PATH | F_ARGV | F_FILE | F_COMMAND);
-			return (NULL);
-		}
-		if (tail)
-			tail->next = command;
-		tail = command;
-		if (!head)
-			head = command;
-		argc = get_argc(token); // TOKEN_WORD only
-		command->argv = (char **)ft_calloc(argc + 1, sizeof(char *));
-		if (!(command->argv))
-		{
-			free_commands(command, F_PATH | F_ARGV | F_FILE | F_COMMAND);
-			return (NULL);
-		}
-		i = 0;
-		file_tail = NULL;
+		if (create_command(token, &cmds_tail))
+			return (1);
+		argc = 0;
+		files_tail = NULL;
 		while (token && token->type != TOKEN_PIPE)
 		{
-			// assign token to command
-			if (token->type == TOKEN_WORD)
-				command->argv[i++] = token->content;
-			else if (token->type == TOKEN_INPUT || token->type == TOKEN_OUTPUT
-				|| token->type == TOKEN_HEREDOC || token->type == TOKEN_APPEND)
-			{
-				/// handle files
-				file = (t_file *)ft_calloc(1, sizeof(t_file));
-				if (!file)
-				{
-					free_commands(command,
-						F_PATH | F_ARGV | F_FILE | F_COMMAND);
-					return (NULL);
-				}
-				if (file_tail)
-					file_tail->next = file;
-				file_tail = file;
-				if (!(command->file))
-					command->file = file;
-				fill_file_data(file, token->next);
-				token = token->next;
-				// i can remove this line if i got norm errors
-			}
-			token->content = NULL;
+			if (fill_command_data(token, cmds_tail, &files_tail, &argc))
+				return (1);
 			token = token->next;
 		}
 		if (token && token->type == TOKEN_PIPE)
 			token = token->next;
 	}
-	return (head);
+	return (0);
 }

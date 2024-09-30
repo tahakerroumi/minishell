@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/29 15:49:13 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/30 06:08:15 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,17 @@
 # include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <signal.h>
 # include <fcntl.h>
-# include <sys/types.h>
+# include <signal.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <sys/ioctl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <stdbool.h>
 
-# define BOLD		"\x1b[1m"
-# define GREEN BOLD	"\x1b[32m"
-# define RED BOLD	"\x1b[31m"
-# define BLUE BOLD	"\x1b[94m"
+# define GREEN		"\x1b[1;32m"
+# define RED		"\x1b[1;31m"
+# define BLUE		"\x1b[1;94m"
 # define RESET		"\x1b[0m"
 
 # define F_MASK		0b000000001
@@ -48,7 +46,13 @@
 # define SUF_LEN	9
 # define RAND_LEN	16
 
-typedef enum	e_mask
+# define IN_PARENT	1
+# define IN_CHILD	2
+
+# define SAVE		1
+# define RECOVER	2
+
+typedef enum e_mask
 {
 	MASK_S_QUOTE = 1337,
 	MASK_D_QUOTE,
@@ -61,7 +65,7 @@ typedef enum	e_mask
 	MASK_APPEND
 }	t_mask;
 
-typedef enum	e_syntax_error
+typedef enum e_syntax_error
 {
 	NO_SYNTAX_ERROR = 0,
 	UNEXPECTED_PIPE_ERROR = 1337,
@@ -72,7 +76,7 @@ typedef enum	e_syntax_error
 	UNEXPECTED_NEW_LINE_ERROR
 }	t_syntax_error;
 
-typedef enum	e_token_type
+typedef enum e_token_type
 {
 	TOKEN_IGNORE_ME = 0,
 	TOKEN_COMMAND = 1337,
@@ -88,7 +92,7 @@ typedef enum	e_token_type
 	TOKEN_APPEND_FILE
 }	t_token_type;
 
-typedef struct	s_token
+typedef struct s_token
 {
 	t_token_type	type;
 	int				*mask;
@@ -97,7 +101,7 @@ typedef struct	s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef enum	e_file_type
+typedef enum e_file_type
 {
 	FILE_IN = 1337,
 	FILE_OUT,
@@ -107,7 +111,7 @@ typedef enum	e_file_type
 	FILE_AMBIGUOUS,
 }	t_file_type;
 
-typedef struct	s_file
+typedef struct s_file
 {
 	t_file_type		type;
 	int				fd;
@@ -116,70 +120,29 @@ typedef struct	s_file
 	struct s_file	*next;
 }	t_file;
 
-typedef struct	s_command
+typedef struct s_command
 {
+	pid_t				pid;
 	char				*path;
 	char				**argv;
 	t_file				*file;
 	int					pipefd[3];
-	pid_t				pid;
 	struct s_command	*next;
 }	t_command;
 
-typedef struct	s_root
+typedef struct s_root
 {
 	t_command		*command;
 	char			**env;
 	size_t			env_size;
 	size_t			env_count;
 	int				sigint;
+	int				in_heredoc;
+	int				childs;
 	unsigned int	exit_status;
-	int				end_loop;
 }	t_root;
 
 extern t_root	g_root;
-
-/*execution*/
-int		execution(t_command *head);
-int		start_executing(t_command *cmd);
-int		create_pipes(t_command *cmd, int *fd);
-int		is_builtin(t_command *cmd);
-int		handle_files(t_file *head);
-int		ft_perror(char *msg, int child);
-int		ft_execve(t_command *cmd);
-int		waiting(t_command *cmd);
-int		execute_builtin(t_command *cmd);
-int		permission_file_error(t_file *file);
-int		is_dir_error(t_file *file);
-int		no_file_dir(t_file *file);
-int		ambigious_error(t_file *file);
-int		rederiction_in(t_file *file);
-int		rederiction_out(t_file *file);
-void	child_routine(t_command *cmd);
-void	handle_pipes(int *pipefd);
-void	execute(t_command *cmd);
-void	exec_command(t_command *cmd);
-void	exec(char **path, t_command *cmd);
-void	exec_path(t_command *cmd);
-void    no_such_f_d(t_command *cmd);
-void    is_dir_cmd(t_command *cmd);
-void    no_permission(t_command *cmd);
-void    not_found(t_command *cmd);
-int		too_many_args(char **cmd);
-char	*ft_getcwd(void);
-
-/*tools*/
-char	**ft_split(char const *s, char c);
-char	*ft_strcpy(char *dest, const char *src);
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-char	*ft_strjoin(char const *s1, char const *s2);
-
-/*builtin*/
-int		builtin_pwd(char **argv);
-int		builtin_echo(char **argv);
-int		builtin_exit(char **argv);
-int		builtin_env(char **argv);
-int		builtin_cd(char **argv);
 
 /*Debugging Functions*/
 void			print_mask(int *cmd_mask);
@@ -189,7 +152,7 @@ void			print_files(t_file *file);
 void			print_commands(t_command *command);
 
 /*MiniShell Loop*/
-void			minishell_loop();
+void			minishell_loop(void);
 
 /*ENVIRONMENT Functions*/
 void			init_env(void);
@@ -217,8 +180,8 @@ t_token			*tokenizer(int **cmd_args);
 int				save_files_original(t_token *token);
 
 /*Parser*/
-t_command 		*parser(char *command_line);
-t_command		*form_commands(t_token *token);
+int				parser(char *command_line);
+int				form_commands(t_token *token);
 
 /*Expander*/
 int				expander(t_token *token);
@@ -231,6 +194,7 @@ int				ifs(t_token *token);
 /*Memory*/
 void			*ft_calloc(size_t count, size_t size);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
+int				ft_memcmp(const void *s1, const void *s2, size_t n);
 void			free_tokens(t_token *head, int f_flag);
 void			free_commands(t_command *head, int f_flag);
 void			free_files(t_file *head);
@@ -240,9 +204,47 @@ void			free_int_split(int **split);
 /*Built-ins*/
 int				builtin_export(char **argv);
 int				builtin_unset(char **argv);
+int				builtin_pwd(char **argv);
+int				builtin_echo(char **argv);
+int				builtin_exit(char **argv);
+int				builtin_env(char **argv);
+int				builtin_cd(char **argv);
+
+/*Signals*/
+void			init_signals(int flag);
+void			sigint_handler(int signal);
 
 /*Executor*/
 int				handle_heredocs(t_command *command);
+int				fill_heredoc_file(char *buffer);
+int				executor(t_command *head);
+void			stdio_files(int flag);
+int				create_childs(t_command *cmd);
+int				create_pipes(t_command *cmd, int *fd);
+int				is_builtin(t_command *cmd);
+int				handle_files(t_file *head);
+void			ft_execve(t_command *cmd, char **path);
+int				waiting(t_command *cmd);
+int				execute_builtin(t_command *cmd);
+int				permission_file_error(t_file *file);
+int				is_dir_error(t_file *file);
+int				no_file_dir(t_file *file);
+int				ambigious_error(t_file *file);
+int				redirection_in(t_file *file);
+int				redirection_out(t_file *file);
+void			child_routine(t_command *cmd);
+void			handle_pipes(int *pipefd);
+void			execute(t_command *cmd);
+void			exec_command(t_command *cmd);
+void			exec(char **path, t_command *cmd);
+void			exec_path(t_command *cmd);
+void			no_such_f_d(t_command *cmd);
+void			is_dir_cmd(t_command *cmd);
+void			no_permission(t_command *cmd);
+void			not_found(t_command *cmd);
+//int				too_many_args(char **cmd);
+char			*ft_getcwd(void);
+int				exit_cleanup(int ret_val);
 
 /*Utilities*/
 int				token_iter(t_token *head, int (*f)(t_token *));
@@ -254,7 +256,11 @@ void			ft_putstr_fd(char *str, int fd);
 char			*ft_strchr(const char *s, int c);
 int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strdup(const char *s1);
-int				ft_strlen(char *str);
+size_t			ft_strlen(const char *str);
+char			**ft_split(char const *s, char c);
+char			*ft_strjoin(char const *s1, char const *s2);
+size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
+size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 void			ft_striteri_l(char *str, size_t len,
 					void (*f)(unsigned int, char *));
 int				**split_int_ptr(int *ptr, int sep);

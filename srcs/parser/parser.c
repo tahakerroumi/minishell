@@ -6,7 +6,7 @@
 /*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:45:04 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/21 12:12:28 by aattak           ###   ########.fr       */
+/*   Updated: 2024/09/29 14:40:29 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,31 +39,29 @@ static int	mask_to_content(t_token *token)
 	return (0);
 }
 
-t_command	*parser(char *command_line)
+int	parser(char *command_line)
 {
 	t_token		*token;
-	t_command	*command;
 
 	token = lexer(command_line);
 	if (!token)
-		return (NULL);
+		return (1);
 	if (expander(token))
 	{
 		free_tokens(token, F_TOKEN | F_MASK | F_ORIGINAL);
-		return (NULL);
+		return (1);
 	}
 	if (token_iter(token, mask_to_content))
 	{
 		free_tokens(token, F_TOKEN | F_MASK | F_CONTENT | F_ORIGINAL);
-		return (NULL);
+		return (1);
 	}
 	free_tokens(token, F_MASK);
-	command = form_commands(token);
-	if (!command)
+	if (form_commands(token))
 	{
 		free_tokens(token, F_TOKEN | F_ORIGINAL | F_CONTENT);
-		return (NULL);
+		return (1);
 	}
 	free_tokens(token, F_TOKEN);
-	return (command);
+	return (0);
 }

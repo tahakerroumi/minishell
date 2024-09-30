@@ -6,7 +6,7 @@
 /*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 10:34:18 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/21 12:00:57 by aattak           ###   ########.fr       */
+/*   Updated: 2024/09/29 14:35:12 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ static int	*str_to_mask(char *str)
 		return (NULL);
 	if (str[0] == 0)
 		return (NULL);
-	//////////////////////////////////////////////
-	// add_history only non-null command///////////
 	add_history(str);
-	//////////////////////////////////////////////
 	len = ft_strlen(str) + 3;
 	mask = (int *)malloc(len * sizeof(int));
 	if (!mask)
@@ -99,20 +96,18 @@ static void	mask_command_line(int *cmd_mask)
 
 int	**masker(char *command_line)
 {
-	int	*cmd_mask;
-	int	**cmd_args;
+	int		*cmd_mask;
+	int		**cmd_args;
 
-	cmd_mask = str_to_mask(command_line); ////////////// char to int
+	cmd_mask = str_to_mask(command_line);
 	free(command_line);
 	if (!cmd_mask)
 		return (NULL);
-	mask_command_line(cmd_mask); ////////////////////// mask command line
-	// print_mask(cmd_mask);//
-	cmd_mask = add_white_spaces(cmd_mask); //////////////// add whitespaces
+	mask_command_line(cmd_mask);
+	cmd_mask = add_white_spaces(cmd_mask);
 	if (!cmd_mask)
 		return (NULL);
-	// print_mask(cmd_mask);//
-	cmd_args = split_int_ptr(cmd_mask, MASK_SPACE); /////// split cmd args
+	cmd_args = split_int_ptr(cmd_mask, MASK_SPACE);
 	free(cmd_mask);
 	if (!cmd_args)
 		return (NULL);
@@ -121,7 +116,6 @@ int	**masker(char *command_line)
 		free(cmd_args);
 		return (NULL);
 	}
-	unmask_dollar_signs(cmd_args); ////////////////// unmask dollar signs
-	// print_cmd_args(cmd_args);
+	unmask_dollar_signs(cmd_args);
 	return (cmd_args);
 }

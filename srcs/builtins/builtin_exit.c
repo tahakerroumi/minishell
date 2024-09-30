@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 21:39:02 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/29 15:21:33 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/30 03:34:02 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_converter(const char *nptr)
 {
-	long	i;
+	size_t	i;
 	int		signe;
 	long	res;
 
@@ -23,7 +23,7 @@ static int	ft_converter(const char *nptr)
 	i = 0;
 	res = 0;
 	signe = 1;
-	while ((nptr[i] == 32) || (nptr[i] >= 9 && nptr[i] <= 13))
+	while (ft_isspace(nptr[i]))
 		i++;
 	if (nptr[i] == '-' || nptr[i] == '+')
 	{
@@ -39,22 +39,37 @@ static int	ft_converter(const char *nptr)
 	return (res * signe);
 }
 
-static int	word(char *s)
+static int	is_word(char *s)
 {
 	int	i;
 
 	i = 0;
-	if (!s)
-		return (0);
-	if (s[0] == '+' || s[0] == '-')
+	if (!s[i])
+		return (1);
+	while (ft_isspace(s[i]))
+		i++;
+	if (s[i] == '+' || s[i] == '-')
 		i++;
 	while (s[i])
 	{
 		if (!ft_isdigit(s[i]))
-			return (1);
+			break ;
 		i++;
 	}
+	while (ft_isspace(s[i]))
+		i++;
+	if (s[i])
+		return (1);
 	return (0);
+}
+
+int	exit_cleanup(int ret_val)
+{
+	rl_clear_history();
+	free_string_array(g_root.env);
+	free_commands(g_root.command, F_PATH | F_ARGV | F_FILE | F_COMMAND);
+	stdio_files(RECOVER);
+	return (ret_val);
 }
 
 int	builtin_exit(char **argv)
@@ -62,16 +77,14 @@ int	builtin_exit(char **argv)
 	long	num;
 
 	ft_putstr_fd("exit\n", 2);
-	if (!argv[1])
-	{
-		exit(g_root.exit_status);
-	}
-	if (word(argv[1]))
+	if (!argv[1] && exit_cleanup(1))
+		exit((unsigned char)g_root.exit_status);
+	if (is_word(argv[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(argv[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		exit(2);
+		exit(exit_cleanup(2));
 	}
 	else if (argv[2])
 	{
@@ -81,5 +94,5 @@ int	builtin_exit(char **argv)
 		return (1);
 	}
 	num = ft_converter(argv[1]);
-	exit((unsigned char)num);
+	exit((unsigned char)exit_cleanup((int)num));
 }

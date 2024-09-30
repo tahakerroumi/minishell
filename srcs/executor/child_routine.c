@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:50:08 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/29 15:32:25 by tkerroum         ###   ########.fr       */
+/*   Updated: 2024/09/30 03:27:55 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	execute(t_command *cmd)
 {
 	if (is_builtin(cmd))
-		exit(execute_builtin(cmd));
+		exit(exit_cleanup(execute_builtin(cmd)));
 	if (ft_strchr(cmd->argv[0], '/') || !ft_getenv("PATH"))
 		exec_path(cmd);
 	else
@@ -34,14 +34,14 @@ int	handle_files(t_file *head)
 			if (ambigious_error(file))
 				return (1);
 		}
-		if (file->type == FILE_IN)
+		if (file->type == FILE_IN || file->type == FILE_HEREDOC)
 		{
-			if (rederiction_in(file))
+			if (redirection_in(file))
 				return (1);
 		}
 		if (file->type == FILE_OUT || file->type == FILE_APPEND)
 		{
-			if (rederiction_out(file))
+			if (redirection_out(file))
 				return (1);
 		}
 		file = file->next;
@@ -53,12 +53,14 @@ void	handle_pipes(int *pipefd)
 {
 	if (pipefd[0])
 	{
-		dup2(pipefd[0], STDIN_FILENO);
+		if (dup2(pipefd[0], STDIN_FILENO) == -1)
+			perror("minishell: dup2");
 		close(pipefd[0]);
 	}
 	if (pipefd[1])
 	{
-		dup2(pipefd[1], STDOUT_FILENO);
+		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
+			perror("minishell: dup2");
 		close(pipefd[1]);
 	}
 	if (pipefd[2])
@@ -67,10 +69,11 @@ void	handle_pipes(int *pipefd)
 
 void	child_routine(t_command *cmd)
 {
+	init_signals(IN_CHILD);
 	handle_pipes(cmd->pipefd);
 	if (handle_files(cmd->file))
-		exit(1);
+		exit(exit_cleanup(1));
 	if (cmd->argv[0])
 		execute(cmd);
-	exit(0);
+	exit(exit_cleanup(0));
 }

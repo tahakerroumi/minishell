@@ -6,7 +6,7 @@
 /*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 11:54:59 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/21 11:55:22 by aattak           ###   ########.fr       */
+/*   Updated: 2024/09/29 14:39:19 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	mask_pipes(int *cmd)
 	{
 		if (cmd[i] == MASK_S_QUOTE || cmd[i] == MASK_D_QUOTE)
 			in_quote = !in_quote;
-		else if (!in_quote && cmd[i] == (int)'|')
+		else if (!in_quote && cmd[i] == (int) '|')
 			cmd[i] = MASK_PIPE;
 		i++;
 	}

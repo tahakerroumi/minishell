@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/19 13:14:20 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/29 16:54:01 by aattak           ###   ########.fr       */
+/*   Created: 2024/09/19 11:08:37 by tkerroum          #+#    #+#             */
+/*   Updated: 2024/09/29 22:27:03 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	ft_strlen(const char *str)
+int	builtin_pwd(char **argv)
 {
-	size_t	i;
+	char	*cwd;
 
-	i = 0;
-	if (!str)
+	(void)argv;
+	cwd = ft_getcwd();
+	if (cwd)
+	{
+		ft_putstr_fd(cwd, 1);
+		ft_putstr_fd("\n", 1);
 		return (0);
-	while (str[i])
-		i++;
-	return (i);
+	}
+	perror("minishell: getcwd");
+	return (1);
 }

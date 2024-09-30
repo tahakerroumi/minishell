@@ -6,7 +6,7 @@
 /*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 11:34:45 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/21 11:27:37 by aattak           ###   ########.fr       */
+/*   Updated: 2024/09/29 14:28:33 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,8 @@ t_token	*lexer(char *command_line)
 	}
 	if (token_iter(token, save_files_original))
 	{
-		/// hande error here ...
 		free_tokens(token, F_ORIGINAL | F_MASK | F_TOKEN);
 		return (NULL);
 	}
-	// print_tokens(token); //////////////////////// delete me
 	return (token);
 }

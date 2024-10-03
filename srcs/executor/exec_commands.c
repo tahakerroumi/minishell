@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:54:38 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/29 22:04:09 by aattak           ###   ########.fr       */
+/*   Updated: 2024/09/30 10:40:06 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,44 @@ void	exec_path(t_command *cmd)
 		no_permission(cmd);
 }
 
-void	exec(char **path, t_command *cmd)
+static char	*build_pathname(char **path, int i, char *arg)
 {
 	char	*pathname;
 	char	*tmp;
+
+	if (path[i][0])
+		pathname = ft_strjoin(path[i], "/");
+	else
+		pathname = ft_strdup("./");
+	if (!pathname)
+	{
+		perror("minishell: malloc");
+		free(path[0]);
+		free(path);
+		exit(exit_cleanup(1));
+	}
+	tmp = pathname;
+	pathname = ft_strjoin(pathname, arg);
+	free(tmp);
+	if (!pathname)
+	{
+		perror("minishell: malloc");
+		free(path[0]);
+		free(path);
+		exit(exit_cleanup(1));
+	}
+	return (pathname);
+}
+
+void	exec(char **path, t_command *cmd)
+{
+	char	*pathname;
 	int		i;
 
 	i = 0;
 	while (path[i])
 	{
-		if (path[i][0])
-			pathname = ft_strjoin(path[i], "/");
-		else
-			pathname = ft_strjoin(".", "/");
-		tmp = pathname;
-		pathname = ft_strjoin(tmp, cmd->argv[0]);
-		free(tmp);
+		pathname = build_pathname(path, i, cmd->argv[0]);
 		if (!access(pathname, F_OK | X_OK))
 		{
 			cmd->path = pathname;
@@ -58,24 +80,30 @@ void	exec(char **path, t_command *cmd)
 		free(pathname);
 		i++;
 	}
-	free_string_array(path);
+	free(path[0]);
+	free(path);
 	not_found(cmd);
 }
 
 void	exec_command(t_command *cmd)
 {
+	char	*tmp;
 	char	**path;
 
-	path = ft_split(ft_getenv("PATH"), ':');
-	if (!path)
+	if (!cmd->argv[0][0])
+		not_found(cmd);
+	tmp = ft_strdup(ft_getenv("PATH"));
+	if (!tmp)
 	{
 		perror("minishell: malloc");
 		exit(exit_cleanup(1));
 	}
-	if (!cmd->argv[0][0])
+	path = custom_split(tmp, ':');
+	if (!path)
 	{
-		free_string_array(path);
-		not_found(cmd);
+		free(tmp);
+		perror("minishell: malloc");
+		exit(exit_cleanup(1));
 	}
 	exec(path, cmd);
 }

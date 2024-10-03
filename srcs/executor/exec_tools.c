@@ -6,7 +6,7 @@
 /*   By: tkerroum <tkerroum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:21:41 by tkerroum          #+#    #+#             */
-/*   Updated: 2024/09/30 03:52:37 by aattak           ###   ########.fr       */
+/*   Updated: 2024/09/30 10:30:03 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	ft_execve(t_command *cmd, char **path)
 	if (cmd->path && execve(cmd->path, cmd->argv, g_root.env) == -1)
 	{
 		perror("minishell: execve");
-		free_string_array(path);
+		free(path[0]);
+		free(path);
 		exit(exit_cleanup(1));
 	}
 	else if (execve(cmd->argv[0], cmd->argv, g_root.env) == -1)

@@ -6,7 +6,7 @@
 /*   By: aattak <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 11:53:54 by aattak            #+#    #+#             */
-/*   Updated: 2024/09/30 06:08:15 by aattak           ###   ########.fr       */
+/*   Updated: 2024/09/30 14:19:59 by aattak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,13 +144,6 @@ typedef struct s_root
 
 extern t_root	g_root;
 
-/*Debugging Functions*/
-void			print_mask(int *cmd_mask);
-void			print_cmd_args(int **cmd);
-void			print_tokens(t_token *token);
-void			print_files(t_file *file);
-void			print_commands(t_command *command);
-
 /*MiniShell Loop*/
 void			minishell_loop(void);
 
@@ -261,6 +254,7 @@ char			**ft_split(char const *s, char c);
 char			*ft_strjoin(char const *s1, char const *s2);
 size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
 size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
+char			**custom_split(char *string, char del);
 void			ft_striteri_l(char *str, size_t len,
 					void (*f)(unsigned int, char *));
 int				**split_int_ptr(int *ptr, int sep);

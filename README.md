@@ -18,8 +18,7 @@
   - `exit`  
 
 ## What I Learned  
-- **System Calls**: Worked extensively with `fork`, `execve`, `pipe`, `dup2`, and signal handling functions (`signal`, `sigaction`) to manage processes and file descriptors.  
-- **Parsing**: Developed logic to handle complex input structures, including pipes, redirections, and heredocs.  
+- **System Calls**: Worked extensively with `fork`, `execve`, `pipe`, `dup2`, and signal handling functions (`signal`, `sigaction`) to manage processes and file descriptors. 
 - **Process Management**: Gained experience in creating and synchronizing child processes.  
 - **Signal Handling**: Learned how to intercept and handle terminal signals to control shell behavior.  
 - **Error Handling**: Implemented robust error detection for invalid commands and system call failures.  
@@ -29,4 +28,17 @@
 - **Libraries**: Standard C library and POSIX system calls  
 
 ## Acknowledgments  
-This project was a challenging yet rewarding exploration of shell behavior, deepening my understanding of system programming, process management, and Unix-like environments.  
+This project was a challenging yet rewarding exploration of shell behavior, deepening my understanding of system programming, process management, and Unix-like environments. 
+
+## Usage
+
+1. Clone the repository:
+   ```bash
+   git clone git@github.com:tahakerroumi/minishell.git
+   cd minishell
+2. Compile the program using make
+   ```bash
+   make
+3. Run the program
+   ```bash
+   ./minishell

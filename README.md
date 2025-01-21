@@ -7,6 +7,8 @@
 - **Command Execution**: Executes both built-in commands and external programs.  
 - **Pipes**: Supports piping to chain multiple commands (e.g., `ls | grep txt`).  
 - **Redirections**: Handles input (`<`), output (`>`), and append (`>>`) redirections.  
+- **Heredoc**: Implements heredoc (`<<`) for inline input redirection.  
+- **Signal Handling**: Captures and handles signals like `Ctrl+C`, `Ctrl+D`, and `Ctrl+\`, mimicking Bash behavior.  
 - **Built-in Commands**: Implements basic commands such as:  
   - `cd`  
   - `echo` (with `-n` option)  
@@ -17,9 +19,10 @@
   - `exit`  
 
 ## What I Learned  
-- **System Calls**: Worked extensively with `fork`, `execve`, `pipe`, and `dup2` to manage processes and file descriptors.  
-- **Parsing**: Developed logic to handle complex input structures, including pipes and redirections.  
+- **System Calls**: Worked extensively with `fork`, `execve`, `pipe`, `dup2`, and signal handling functions (`signal`, `sigaction`) to manage processes and file descriptors.  
+- **Parsing**: Developed logic to handle complex input structures, including pipes, redirections, and heredocs.  
 - **Process Management**: Gained experience in creating and synchronizing child processes.  
+- **Signal Handling**: Learned how to intercept and handle terminal signals to control shell behavior.  
 - **Error Handling**: Implemented robust error detection for invalid commands and system call failures.  
 
 ## Technologies  
@@ -27,4 +30,4 @@
 - **Libraries**: Standard C library and POSIX system calls  
 
 ## Acknowledgments  
-This project was a challenging yet rewarding exploration of shell behavior, deepening my understanding of system programming and Unix-like environments.  
+This project was a challenging yet rewarding exploration of shell behavior, deepening my understanding of system programming, process management, and Unix-like environments.  

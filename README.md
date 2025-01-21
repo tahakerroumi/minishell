@@ -6,8 +6,7 @@
 - **Prompt**: Displays a prompt and reads user input.  
 - **Command Execution**: Executes both built-in commands and external programs.  
 - **Pipes**: Supports piping to chain multiple commands (e.g., `ls | grep txt`).  
-- **Redirections**: Handles input (`<`), output (`>`), and append (`>>`) redirections.  
-- **Heredoc**: Implements heredoc (`<<`) for inline input redirection.  
+- **Redirections**: Handles input (`<`), output (`>`), append (`>>`), and heredoc (`<<`) redirections.  
 - **Signal Handling**: Captures and handles signals like `Ctrl+C`, `Ctrl+D`, and `Ctrl+\`, mimicking Bash behavior.  
 - **Built-in Commands**: Implements basic commands such as:  
   - `cd`  
